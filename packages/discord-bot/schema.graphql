@@ -1,0 +1,701 @@
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+scalar BigInt
+
+"""
+Boolean expression comparing fields on type "BigInt"
+"""
+input BigIntFilter {
+  eq: BigInt
+  gt: BigInt
+  gte: BigInt
+  in: [BigInt!]
+  lt: BigInt
+  lte: BigInt
+  neq: BigInt
+}
+
+"""
+Boolean expression comparing fields on type "Boolean"
+"""
+input BooleanFilter {
+  eq: Boolean
+  gt: Boolean
+  gte: Boolean
+  in: [Boolean!]
+  lt: Boolean
+  lte: Boolean
+  neq: Boolean
+}
+
+scalar Cursor
+
+scalar Date
+
+"""
+Boolean expression comparing fields on type "Date"
+"""
+input DateFilter {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date!]
+  lt: Date
+  lte: Date
+  neq: Date
+}
+
+scalar Datetime
+
+"""
+Boolean expression comparing fields on type "Datetime"
+"""
+input DatetimeFilter {
+  eq: Datetime
+  gt: Datetime
+  gte: Datetime
+  in: [Datetime!]
+  lt: Datetime
+  lte: Datetime
+  neq: Datetime
+}
+
+"""
+Boolean expression comparing fields on type "Float"
+"""
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  neq: Float
+}
+
+"""
+Boolean expression comparing fields on type "Int"
+"""
+input IntFilter {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  neq: Int
+}
+
+scalar JSONype mutation
+
+"""
+Boolean expression comparing fields on type "JSON"
+"""
+input JSONFilter {
+  eq: JSON
+  neq: JSON
+}
+
+"""The root type for creating and mutating data"""
+type Mutation {
+  """Deletes zero or more records from the collection"""
+  deleteFromserver_tokensCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: server_tokensFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): server_tokensDeleteResponse!
+
+  """Deletes zero or more records from the collection"""
+  deleteFromserversCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: serversFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): serversDeleteResponse!
+
+  """Deletes zero or more records from the collection"""
+  deleteFromtokensCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: tokensFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): tokensDeleteResponse!
+
+  """Deletes zero or more records from the collection"""
+  deleteFromwalletsCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: walletsFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): walletsDeleteResponse!
+
+  """
+  Adds one or more `server_tokensInsertResponse` records to the collection
+  """
+  insertIntoserver_tokensCollection(objects: [server_tokensInsertInput!]!): server_tokensInsertResponse
+
+  """Adds one or more `serversInsertResponse` records to the collection"""
+  insertIntoserversCollection(objects: [serversInsertInput!]!): serversInsertResponse
+
+  """Adds one or more `tokensInsertResponse` records to the collection"""
+  insertIntotokensCollection(objects: [tokensInsertInput!]!): tokensInsertResponse
+
+  """Adds one or more `walletsInsertResponse` records to the collection"""
+  insertIntowalletsCollection(objects: [walletsInsertInput!]!): walletsInsertResponse
+
+  """Updates zero or more records in the collection"""
+  updateserver_tokensCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: server_tokensUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: server_tokensFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): server_tokensUpdateResponse!
+
+  """Updates zero or more records in the collection"""
+  updateserversCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: serversUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: serversFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): serversUpdateResponse!
+
+  """Updates zero or more records in the collection"""
+  updatetokensCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: tokensUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: tokensFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): tokensUpdateResponse!
+
+  """Updates zero or more records in the collection"""
+  updatewalletsCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: walletsUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: walletsFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): walletsUpdateResponse!
+}
+
+"""Defines a per-field sorting order"""
+enum OrderByDirection {
+  """Ascending order, nulls first"""
+  AscNullsFirst
+
+  """Ascending order, nulls last"""
+  AscNullsLast
+
+  """Descending order, nulls first"""
+  DescNullsFirst
+
+  """Descending order, nulls last"""
+  DescNullsLast
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+"""The root type for querying data"""
+type Query {
+  """A pagable collection of type `server_tokens`"""
+  server_tokensCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: server_tokensFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [server_tokensOrderBy!]
+  ): server_tokensConnection
+
+  """A pagable collection of type `servers`"""
+  serversCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: serversFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [serversOrderBy!]
+  ): serversConnection
+
+  """A pagable collection of type `tokens`"""
+  tokensCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: tokensFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [tokensOrderBy!]
+  ): tokensConnection
+
+  """A pagable collection of type `wallets`"""
+  walletsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: walletsFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [walletsOrderBy!]
+  ): walletsConnection
+}
+
+"""
+Boolean expression comparing fields on type "String"
+"""
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  neq: String
+}
+
+scalar Time
+
+"""
+Boolean expression comparing fields on type "Time"
+"""
+input TimeFilter {
+  eq: Time
+  gt: Time
+  gte: Time
+  in: [Time!]
+  lt: Time
+  lte: Time
+  neq: Time
+}
+
+scalar UUID
+
+"""
+Boolean expression comparing fields on type "UUID"
+"""
+input UUIDFilter {
+  eq: UUID
+  in: [UUID!]
+  neq: UUID
+}
+
+type server_tokens {
+  server_id: BigInt!
+  token_id: String!
+  servers: servers
+  tokens: tokens
+}
+
+type server_tokensConnection {
+  edges: [server_tokensEdge!]!
+  pageInfo: PageInfo!
+}
+
+type server_tokensDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [server_tokens!]!
+}
+
+type server_tokensEdge {
+  cursor: String!
+  node: server_tokens!
+}
+
+input server_tokensFilter {
+  server_id: BigIntFilter
+  token_id: StringFilter
+}
+
+input server_tokensInsertInput {
+  server_id: BigInt
+  token_id: String
+}
+
+type server_tokensInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [server_tokens!]!
+}
+
+input server_tokensOrderBy {
+  server_id: OrderByDirection
+  token_id: OrderByDirection
+}
+
+input server_tokensUpdateInput {
+  server_id: BigInt
+  token_id: String
+}
+
+type server_tokensUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [server_tokens!]!
+}
+
+type servers {
+  id: BigInt!
+  name: String!
+  server_tokensCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: server_tokensFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [server_tokensOrderBy!]
+  ): server_tokensConnection
+  walletsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: walletsFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [walletsOrderBy!]
+  ): walletsConnection
+}
+
+type serversConnection {
+  edges: [serversEdge!]!
+  pageInfo: PageInfo!
+}
+
+type serversDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [servers!]!
+}
+
+type serversEdge {
+  cursor: String!
+  node: servers!
+}
+
+input serversFilter {
+  id: BigIntFilter
+  name: StringFilter
+}
+
+input serversInsertInput {
+  id: BigInt
+  name: String
+}
+
+type serversInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [servers!]!
+}
+
+input serversOrderBy {
+  id: OrderByDirection
+  name: OrderByDirection
+}
+
+input serversUpdateInput {
+  id: BigInt
+  name: String
+}
+
+type serversUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [servers!]!
+}
+
+type tokens {
+  id: String!
+  metadata: JSON!
+  server_tokensCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: server_tokensFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [server_tokensOrderBy!]
+  ): server_tokensConnection
+}
+
+type tokensConnection {
+  edges: [tokensEdge!]!
+  pageInfo: PageInfo!
+}
+
+type tokensDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [tokens!]!
+}
+
+type tokensEdge {
+  cursor: String!
+  node: tokens!
+}
+
+input tokensFilter {
+  id: StringFilter
+}
+
+input tokensInsertInput {
+  id: String
+  metadata: JSON
+}
+
+type tokensInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [tokens!]!
+}
+
+input tokensOrderBy {
+  id: OrderByDirection
+}
+
+input tokensUpdateInput {
+  id: String
+  metadata: JSON
+}
+
+type tokensUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [tokens!]!
+}
+
+type wallets {
+  user_id: BigInt!
+  server_id: BigInt!
+  wallet: String!
+  servers: servers
+}
+
+type walletsConnection {
+  edges: [walletsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type walletsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [wallets!]!
+}
+
+type walletsEdge {
+  cursor: String!
+  node: wallets!
+}
+
+input walletsFilter {
+  user_id: BigIntFilter
+  server_id: BigIntFilter
+  wallet: StringFilter
+}
+
+input walletsInsertInput {
+  user_id: BigInt
+  server_id: BigInt
+  wallet: String
+}
+
+type walletsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [wallets!]!
+}
+
+input walletsOrderBy {
+  user_id: OrderByDirection
+  server_id: OrderByDirection
+  wallet: OrderByDirection
+}
+
+input walletsUpdateInput {
+  user_id: BigInt
+  server_id: BigInt
+  wallet: String
+}
+
+type walletsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [wallets!]!
+}
