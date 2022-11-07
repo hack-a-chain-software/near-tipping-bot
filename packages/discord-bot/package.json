@@ -8,6 +8,9 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
+    "graphql": "^15.8.0",
+    "node-fetch": "2",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3"
   }
