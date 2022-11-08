@@ -3,7 +3,7 @@ const findServerById = require("../graphql/queries/findServerById");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("register")
+    .setName("verifyserver")
     .setDescription("Register your server to use commands")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
@@ -17,7 +17,8 @@ module.exports = {
 
     if (data.serversCollection.edges.length === 0) {
       await interaction.editReply({
-        content: "This server has not yet been registered. Use the /register command to register your server",
+        content:
+          "This server has not yet been registered. Use the /register command to register your server",
       });
       return;
     }

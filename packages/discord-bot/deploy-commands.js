@@ -47,7 +47,7 @@ const rest = new REST({ version: "9" }).setToken(process.env.BOT_TOKEN);
     await rest.put(
       //To deploy global commands, adjust the route in the script to .applicationCommands(clientId).
 
-      Routes.applicationCommands(process.env.clientId),
+      Routes.applicationCommands(process.env.CLIENT_ID),
       //Routes.applicationGuildCommands(clientId, guildId),
       { body: commands }
     );
