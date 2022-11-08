@@ -9,7 +9,7 @@ module.exports = async (client) => {
   const commandFiles = readdirSync(commandsPath).filter((file) =>
     file.endsWith(".js")
   );
-  const restClient = new REST({ version: "9" }).setToken(process.env.TOKEN);
+  const restClient = new REST({ version: "9" }).setToken(process.env.BOT_TOKEN);
 
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
