@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const listAllTokens = require("../graphql/queries/listAllTokensIntoDatabase");
 const insertTokenIntoServer = require("../graphql/mutations/insertTokenIntoServer");
-const findServerById = require("../graphql/queries/findServerById");
 const findDuplicatePkError = require("../utils/findDuplicatePkError");
+const findServerNotRegistered = require("../utils/findServerNotRegisteredError");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,15 +39,6 @@ module.exports = {
 
     await interaction.reply("Working on it...");
 
-    const { serversCollection } = await findServerById(serverId);
-
-    if (serversCollection.edges.length === 0) {
-      await interaction.editReply(
-        "This server has not yet been registered. Use the /register command to register your server"
-      );
-      return;
-    }
-
     try {
       await insertTokenIntoServer(serverId, tokenId);
 
@@ -58,6 +49,12 @@ module.exports = {
       if (findDuplicatePkError(graphQLErrors)) {
         await interaction.editReply(
           "This token has already been added to the server"
+        );
+        return;
+      }
+      if (findServerNotRegistered(graphQLErrors)) {
+        await interaction.editReply(
+          "This server has not yet been registered. Use the /register command to register your server"
         );
         return;
       }
