@@ -1,15 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const registerServer = require("../graphql/mutations/registerServer");
-
-function findDuplicatePkError(graphQLErrors) {
-  if (Array.isArray(graphQLErrors)) {
-    return graphQLErrors.find((error) =>
-      error.message.match("duplicate key value violates unique constraint")
-    );
-  }
-
-  return undefined;
-}
+const findDuplicatePkError = require("../utils/findDuplicatePkError");
 
 module.exports = {
   data: new SlashCommandBuilder()
