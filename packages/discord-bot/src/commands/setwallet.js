@@ -1,28 +1,47 @@
 const { SlashCommandBuilder } = require("discord.js");
+const addWallet = require("../graphql/mutations/insertWalletIntoDatabase");
+const findDuplicatePkError = require("../utils/findDuplicatePkError");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("setwallet")
     .setDescription(
-      "Set your near wallet (warning: required to receive tokens )"
+      "Set your near wallet (warning: required to receive tokens)"
     )
-    .addStringOption((option) =>
-      option
+    .addStringOption((options) =>
+      options
         .setName("wallet")
-        .setDescription("Your near wallet  eg. peter.near")
+        .setDescription("Your near wallet eg. peter.near")
         .setRequired(true)
     ),
+
   async execute(interaction) {
-    const near_wallet = interaction.options.getString("wallet");
-    const username = interaction.user.username;
-    const user_id = interaction.user.id;
-    const guild_id = interaction.member.guild.id;
+    const nearWallet = interaction.options.getString("wallet");
+    const { username, id } = interaction.user;
+    const serverId = interaction.member.guild.id;
 
-    //await mongo.addWallet(user_id, near_wallet, guild_id);
+    await interaction.reply({ content: "Working on it...", ephemeral: true });
 
-    await interaction.reply({
-      content: `Hey ${username}, your wallet: ${near_wallet} is set;`, //Your wallet was set - to change your wallet, just use this command again
-      ephemeral: true,
-    });
+    try {
+      await addWallet(id, serverId, nearWallet);
+      await interaction.editReply({
+        content: `Hey ${username}, your wallet: ${nearWallet} is set`,
+        ephemeral: true,
+      });
+    } catch ({ graphQLErrors }) {
+      if (findDuplicatePkError(graphQLErrors)) {
+        await interaction.editReply({
+          content: "You already have a registered wallet in this server",
+          ephemeral: true,
+        });
+
+        return;
+      }
+
+      await interaction.editReply({
+        content: `Internal error, if you think this is a bug, please contact developers: ${graphQLErrors}`,
+        ephemeral: true,
+      });
+    }
   },
 };
