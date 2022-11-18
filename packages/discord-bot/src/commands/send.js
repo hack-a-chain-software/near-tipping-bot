@@ -1,4 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
+const listServerTokens = require("../graphql/queries/listServerTokens");
+const findUserWallet = require("../graphql/queries/findUserWallet");
+const findToken = require("../graphql/queries/findToken");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,8 +11,8 @@ module.exports = {
       option
         .setName("token")
         .setDescription("Select your token from the list")
-        .setRequired(true)
         .setAutocomplete(true)
+        .setRequired(true)
     )
     .addNumberOption((option) =>
       option
@@ -24,81 +27,63 @@ module.exports = {
         .setRequired(true)
     ),
 
+  async autocomplete(interaction) {
+    const serverId = interaction.member.guild.id;
+
+    const tokens = await listServerTokens(serverId);
+
+    const focusedValue = interaction.options.getFocused();
+
+    const filtered = tokens.filter((choice) =>
+      choice.metadata.name.startsWith(focusedValue)
+    );
+
+    await interaction.respond(
+      filtered.map((token) => ({ name: token.metadata.name, value: token.id }))
+    );
+  },
+
   async execute(interaction) {
-    const guildID = interaction.member.guild.id;
+    const burnWallet = null;
 
-    let guild = await mongo.getGuild(guildID);
-    let choices = [];
-    let tokens = [];
-    let ephemeral = true;
-    let row = null;
+    const { user: username } = interaction;
 
-    //loop through guild token and set to autocomplete
+    const serverId = interaction.member.guild.id;
 
-    for (let i = 0; i < guild.guild_tokens.length; i++) {
-      choices.push({
-        name: `${guild.guild_tokens[i].name}`,
-        value: `${i}`,
-      });
-      tokens.push(`${guild.guild_tokens[i].name}`);
-    }
+    const amount = interaction.options.getNumber("amount");
 
-    if (interaction.isAutocomplete()) {
-      interaction.respond(choices).catch(console.error);
-    }
+    const address = interaction.options.getUser("address");
 
-    // Must handle interactions (command ones) inside the if statement
-    if (interaction.isCommand()) {
-      const amount = interaction.options.getNumber("amount");
-      const address = interaction.options.getUser("address");
-      let tokenIndex = interaction.options.getString("token");
+    const tokenId = interaction.options.getString("token");
 
-      let tokenName, burnWallet, tokenAddress;
-      let msg = "";
-      let tokenAvalible = true;
+    const { walletsCollection } = await findUserWallet(address.id, serverId);
 
-      // let walletDB = await mongo.getWallet(address.id, guildID);
+    const token = await findToken(tokenId);
 
-      // handling tokens that are not listed
-      try {
-        tokenName = guild.guild_tokens[tokenIndex].name;
-        burnWallet = guild.guild_tokens[tokenIndex].burner;
-        tokenAddress = guild.guild_tokens[tokenIndex].address;
-      } catch (e) {
-        console.log("Erro");
-        tokenAvalible = false;
-      }
-
-      //await interaction.deferReply();
-      // handling the input
-      if (!tokenAvalible) {
-        // token not listed
-
-        for (i = 0; i < tokens.length; i++) {
-          if (i < tokens.length - 1) {
-            msg = `${msg} ${tokens[i]},`;
-          } // last token doesnt need comma
-          else {
-            msg = `${msg} ${tokens[i]}`;
-          }
-        }
-
-        msg = `That token is unavalible. Please, pick one of the tokens listed on this server: ${msg}`;
-        ephemeral = true;
-      } else if (walletDB == null) {
-        // token listed, but receiver wallet not connected
-        msg = `Hey ${address}, ${interaction.user.username} is trying to send you ${amount} ${tokenName}. Please, register your wallet using /setwallet `;
-        ephemeral = false;
-      } else {
-        // token listed and receiver wallet connected
-        msg = `Click the link to transfer: https://peterthebot.com?token=${tokenAddress}&amount=${amount}&receiver=${walletDB.near_wallet}&burner=${burnWallet}`;
-        ephemeral = true;
-      }
-
+    if (token.length === 0) {
       await interaction.reply({
-        content: msg,
-        ephemeral: ephemeral,
+        content:
+          "That token is unavalible. Please, pick one of the tokens listed on this server",
+        ephemeral: true,
       });
+
+      return;
     }
+
+    if (walletsCollection.edges.length === 0) {
+      await interaction.reply({
+        content: `Hey ${address}, ${username} is trying to send you ${amount} ${token[0].metadata.name}. Please, register your wallet using /setwallet `,
+        ephemeral: false,
+      });
+
+      return;
+    }
+
+    const userWallet = walletsCollection.edges[0].node.wallet;
+
+    await interaction.reply({
+      content: `Click the link to transfer: https://peterthebot.com?token=${token[0].metadata.name}&amount=${amount}&receiver=${userWallet}&burner=${burnWallet}`,
+      ephemeral: true,
+    });
   },
 };
