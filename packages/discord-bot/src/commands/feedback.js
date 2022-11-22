@@ -1,23 +1,41 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("feedback")
-    .setDescription("Share your feedback with our developers")
+    .setDescription("Send a feedback")
     .addStringOption((option) =>
       option
         .setName("feedback")
-        .setDescription("Your feedback")
+        .setDescription("send a feedback")
         .setRequired(true)
     ),
+
   async execute(interaction) {
-    const message = interaction.options.getString("feedback");
-    const username = interaction.user.username;
-    const user_id = interaction.user.id;
-    const guild_id = interaction.member.guild.id;
+    const { user } = interaction;
+
+    // const serverId = interaction.member.guild.id;
+
+    const feedback = interaction.options.getString("feedback");
+
+    const message = new EmbedBuilder()
+      .setTitle("Feedback")
+      .setDescription(feedback)
+      .setFooter({
+        text: user.tag,
+        iconURL: user.displayAvatarURL({ format: "png" }),
+      })
+      .setColor("Random");
+
+    // await addFeedback(user.id, serverId, feedback);
+
+    await interaction.client.guilds.cache
+      .get(process.env.SERVER_ID)
+      .channels.cache.get(process.env.FEEDBACK_CHANNEL_ID)
+      .send({ embeds: [message] });
 
     await interaction.reply({
-      content: `Hey ${username}, thanks for the feedback`,
+      content: "Your feedback has been sent",
       ephemeral: true,
     });
   },
