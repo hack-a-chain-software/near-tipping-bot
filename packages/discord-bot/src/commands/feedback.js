@@ -8,7 +8,7 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("feedback")
-        .setDescription("send a feedback")
+        .setDescription("Send a feedback")
         .setRequired(true)
     ),
 
