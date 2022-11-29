@@ -16,10 +16,8 @@ module.exports = {
     const user_id = interaction.user.id;
     const guild_id = interaction.member.guild.id;
 
-    //await mongo.addFeedback(user_id, guild_id, message)
-
     await interaction.reply({
-      content: `Hey ${username}, thanks for the feedback`, //Your wallet was set - to change your wallet, just use this command again
+      content: `Hey ${username}, thanks for the feedback`,
       ephemeral: true,
     });
   },

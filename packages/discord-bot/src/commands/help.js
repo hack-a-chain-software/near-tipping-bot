@@ -6,8 +6,6 @@ module.exports = {
     .setDescription("How to use Near the wire bot"),
 
   async execute(interaction) {
-    //let message = await mongo.getHelp();
-
     await interaction.reply({
       content: message.message,
       ephemeral: true,
