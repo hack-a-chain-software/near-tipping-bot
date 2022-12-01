@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const sendFeedback = require("../graphql/mutations/sendFeedback");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,7 +15,7 @@ module.exports = {
   async execute(interaction) {
     const { user } = interaction;
 
-    // const serverId = interaction.member.guild.id;
+    const serverId = interaction.member.guild.id;
 
     const feedback = interaction.options.getString("feedback");
 
@@ -27,7 +28,7 @@ module.exports = {
       })
       .setColor("Random");
 
-    // await addFeedback(user.id, serverId, feedback);
+    await sendFeedback(user.id, serverId, user.username, feedback);
 
     await interaction.client.guilds.cache
       .get(process.env.SERVER_ID)
