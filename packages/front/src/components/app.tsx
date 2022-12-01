@@ -8,7 +8,7 @@ const Pages = () => {
 
 export const App = () => (
   <Router>
-    <Header />
+    {/* <Header /> */}
     <Pages />
   </Router>
 );
