@@ -36,22 +36,21 @@ module.exports = {
     const tokenId = interaction.options.getString("token");
     const serverId = interaction.member.guild.id;
 
-    await interaction.reply("Working on it...");
+    const token = await deleteTokenFromList(tokenId, serverId);
 
-    const { deleteFromserver_tokensCollection } = await deleteTokenFromList(
-      tokenId,
-      serverId
-    );
-    if (deleteFromserver_tokensCollection.records.length === 0) {
-      await interaction.editReply(
-        "This server has not yet been registered. Use the /register command to register your server"
-      );
+    if (!token) {
+      await interaction.reply({
+        content:
+          "This server has not yet been registered or this token not registered on server. Use the /register command to register your server or choice a token registered!",
+        ephemeral: true,
+      });
 
       return;
     }
 
-    await interaction.editReply(
-      `Hey ${username} the token has been removed from the server's token list `
-    );
+    await interaction.reply({
+      content: `Hey ${username} the token has been removed from the server's token list`,
+      ephemeral: true,
+    });
   },
 };

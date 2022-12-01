@@ -37,29 +37,32 @@ module.exports = {
 
     const serverId = interaction.member.guild.id;
 
-    await interaction.reply("Working on it...");
-
     try {
       await insertTokenIntoServer(serverId, tokenId);
 
-      await interaction.editReply(
-        `Hey ${username}, the token has been added to your server `
-      );
+      await interaction.reply({
+        content: `Hey ${username}, the token has been added to your server`,
+        ephemeral: true,
+      });
     } catch ({ graphQLErrors }) {
       if (findDuplicatePkError(graphQLErrors)) {
-        await interaction.editReply(
-          "This token has already been added to the server"
-        );
+        await interaction.reply({
+          content: "This token has already been added to the server",
+          ephemeral: true,
+        });
         return;
       }
       if (findServerNotRegistered(graphQLErrors)) {
-        await interaction.editReply(
-          "This server has not yet been registered. Use the /register command to register your server"
-        );
+        await interaction.reply({
+          content:
+            "This server has not yet been registered or this token not registered on server. Use the /register command to register your server or choice a token registered!",
+          ephemeral: true,
+        });
         return;
       }
-      await interaction.editReply({
+      await interaction.reply({
         content: `Internal error, if you think this is a bug, please contact developers: ${graphQLErrors}`,
+        ephemeral: true,
       });
     }
   },

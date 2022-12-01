@@ -56,11 +56,11 @@ module.exports = {
 
     const tokenId = interaction.options.getString("token");
 
-    const { walletsCollection } = await findUserWallet(address.id, serverId);
+    const userWallet = await findUserWallet(address.id, serverId);
 
-    const token = await findToken(tokenId);
+    const token = await findToken(tokenId, serverId);
 
-    if (token.length === 0) {
+    if (!token) {
       await interaction.reply({
         content:
           "That token is unavalible. Please, pick one of the tokens listed on this server",
@@ -70,19 +70,17 @@ module.exports = {
       return;
     }
 
-    if (walletsCollection.edges.length === 0) {
+    if (!userWallet) {
       await interaction.reply({
-        content: `Hey ${address}, ${username} is trying to send you ${amount} ${token[0].metadata.name}. Please, register your wallet using /setwallet `,
+        content: `Hey ${address}, ${username} is trying to send you ${amount} ${token.metadata.name}. Please, register your wallet using /setwallet `,
         ephemeral: false,
       });
 
       return;
     }
 
-    const userWallet = walletsCollection.edges[0].node.wallet;
-
     await interaction.reply({
-      content: `Click the link to transfer: https://peterthebot.com?token=${token[0].metadata.name}&amount=${amount}&receiver=${userWallet}&burner=${burnWallet}`,
+      content: `Click the link to transfer: https://peterthebot.com?token=${token.metadata.name}&amount=${amount}&receiver=${userWallet}&burner=${burnWallet}`,
       ephemeral: true,
     });
   },

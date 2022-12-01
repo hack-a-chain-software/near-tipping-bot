@@ -15,7 +15,7 @@ module.exports = {
       .setColor("Random");
 
     tokens.forEach((token) =>
-      embed.addFields({ name: token.metadata.spec, value: token.metadata.name })
+      embed.addFields({ name: token.metadata.name, value: token.id })
     );
 
     await interaction.reply({ embeds: [embed], ephemeral: true });
