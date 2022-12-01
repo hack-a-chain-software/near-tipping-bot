@@ -22,5 +22,7 @@ module.exports = async (userId, serverId) => {
     },
   });
 
-  return data;
+  const { walletsCollection } = data;
+
+  return walletsCollection.edges[0];
 };

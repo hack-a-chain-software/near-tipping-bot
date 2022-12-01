@@ -12,25 +12,26 @@ module.exports = {
     const { id, name } = interaction.member.guild;
     const { user: username } = interaction;
 
-    await interaction.reply("Working on it...");
-
     try {
       await registerServer(id, name);
 
-      await interaction.editReply({
+      await interaction.reply({
         content: `Hey ${username}, your server was registered`,
+        ephemeral: true,
       });
     } catch ({ graphQLErrors }) {
       if (findDuplicatePkError(graphQLErrors)) {
-        await interaction.editReply({
+        await interaction.reply({
           content: "This server was registered already",
+          ephemeral: true,
         });
 
         return;
       }
 
-      await interaction.editReply({
+      await interaction.reply({
         content: `Internal error, if you think this is a bug, please contact developers: ${graphQLErrors}`,
+        ephemeral: true,
       });
     }
   },

@@ -10,22 +10,19 @@ module.exports = {
     const { username, id } = interaction.user;
     const serverId = interaction.member.guild.id;
 
-    const { walletsCollection } = await findUserWallet(id, serverId);
+    const userWallet = await findUserWallet(id, serverId);
 
-    await interaction.reply({ content: "Working on it...", ephemeral: true });
-
-    if (walletsCollection.edges.length === 0) {
-      await interaction.editReply({
+    if (!userWallet) {
+      await interaction.reply({
         content:
-          "There is no wallet registred - please use /setwallet to save your wallet",
+          "There is no wallet registred. Please use /setwallet to save your wallet",
+        ephemeral: true,
       });
       return;
     }
 
-    const nearWallet = walletsCollection.edges[0].node.wallet;
-
-    await interaction.editReply({
-      content: `Hey you ${username}, your wallet is ${nearWallet}`,
+    await interaction.reply({
+      content: `Hey you ${username}, your wallet is ${userWallet.node.wallet}`,
       ephemeral: true,
     });
   },
