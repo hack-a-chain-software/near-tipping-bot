@@ -18,9 +18,8 @@ module.exports = {
         text: user.tag,
         iconURL: user.displayAvatarURL({ format: "png" }),
       })
-      .setColor("Random");
-
-    message.addFields({ name: "Address", value: address });
+      .setColor("Random")
+      .addFields({ name: "Address", value: address });
 
     await interaction.client.guilds.cache
       .get(process.env.SERVER_ID)

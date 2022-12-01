@@ -2,7 +2,7 @@ const { gql } = require("@apollo/client/core");
 const { graphQlClient } = require("../../lib/graphQlClient");
 
 module.exports = async (serverId) => {
-  const result = await graphQlClient.query({
+  const { data } = await graphQlClient.query({
     query: gql`
       query FindServerById($filter: String) {
         serversCollection(filter: { id: { eq: $filter } }) {
@@ -16,8 +16,8 @@ module.exports = async (serverId) => {
       }
     `,
     variables: {
-      filter: serverId
+      filter: serverId,
     },
   });
-  return result;
+  return data.serversCollection.edges[0];
 };
