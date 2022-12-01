@@ -37,7 +37,7 @@ export const HowToUse = () => {
 
                   <div className="font-extrabold text-2xl pb-4">
                       <h3 className="pb-1">Enable</h3>
-                      <span className="text-pink">tokens</span>
+                      <span className="text-pink">Tokens</span>
                   </div>
 
                   <p className="font-medium text-base">Use the <span className="text-pink">/enable token</span> command to choose which tokens to make available on your server.</p>

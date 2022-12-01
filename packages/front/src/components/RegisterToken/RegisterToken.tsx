@@ -1,8 +1,8 @@
 export const RegisterToken = () => {
   return(
-      <section id="register_token" className="text-white flex flex-col items-center py-32 px-8 ">
+      <section id="register_token" className="text-white flex flex-col items-center pt-32 pb-12 px-8 ">
 
-          <svg className="absolute top-[2220px] left-0 z-40" width="250" height="800" viewBox="0 0 281 953" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="absolute top-[2160px] left-0 z-40" width="250" height="800" viewBox="0 0 281 953" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g filter="url(#filter0_d_7_223)">
                   <path d="M-157.791 872.706C-265.437 870.068 -377.061 880.177 -463.923 807.084C-560.275 726.005 -611.579 606.354 -616.654 486.576C-622.519 348.153 -600.105 202.011 -492.772 126.2C-378.375 45.4 -211.34 30.3869 -77.0351 105.435C43.7853 172.947 50.4551 329.491 99.9648 457.413C148.446 582.678 266.077 718.243 200.829 823.37C135.849 928.065 -28.7623 875.867 -157.791 872.706Z" fill="#424250" />
               </g>
@@ -30,7 +30,7 @@ export const RegisterToken = () => {
 
           <p className="font-extrabold text-fS32px pt-12 pb-8 z-50 text-center">Didn’t find the <span className="text-azoxo">token you need?</span></p>
 
-          <div className="flex flex-col lg:flex-row items-center pb-12 my-14 z-50">
+          <div className="flex flex-col lg:flex-row items-center pt-8 pb-4 my-14 z-50">
               <img src="\images\tipping_bot.png" alt="Tipping bot"></img>
               <div className="flex flex-col items-center px-8">
                   <p className="text-center pb-12 font-normal text-xl">Make a request to add a new token <br className="hidden lg:block"></br>
