@@ -1,6 +1,6 @@
-import { NavBar } from '@/components/navbar/';
+import {NavBar} from '@/components/navbar/';
 
-import { SendToken } from '@/components/sendtoken/'
+import {SendToken} from '@/components/sendtoken/'
 import {HowToUse} from '@/components/howtouse/';
 import {AvaiableTokens} from '@/components/availabletokens/';
 import {RegisterToken} from '@/components/registertoken/';

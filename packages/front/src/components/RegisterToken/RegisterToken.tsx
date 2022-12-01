@@ -2,7 +2,7 @@ export const RegisterToken = () => {
   return(
       <section id="register_token" className="text-white flex flex-col items-center py-32 px-8 ">
 
-          <svg className="absolute top-[2210px] left-0 z-40" width="250" height="800" viewBox="0 0 281 953" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="absolute top-[2220px] left-0 z-40" width="250" height="800" viewBox="0 0 281 953" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g filter="url(#filter0_d_7_223)">
                   <path d="M-157.791 872.706C-265.437 870.068 -377.061 880.177 -463.923 807.084C-560.275 726.005 -611.579 606.354 -616.654 486.576C-622.519 348.153 -600.105 202.011 -492.772 126.2C-378.375 45.4 -211.34 30.3869 -77.0351 105.435C43.7853 172.947 50.4551 329.491 99.9648 457.413C148.446 582.678 266.077 718.243 200.829 823.37C135.849 928.065 -28.7623 875.867 -157.791 872.706Z" fill="#424250" />
               </g>

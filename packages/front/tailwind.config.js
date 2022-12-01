@@ -8,7 +8,8 @@ module.exports = {
           pink: "#FC89F7",
           blue_button: "#7983FF",
           graphite: "#424250",
-          purple: "#AB80FF"
+          purple: "#AB80FF",
+          grey: "#3D3D3D"
       },
 
       fontSize: {
