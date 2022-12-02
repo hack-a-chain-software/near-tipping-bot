@@ -9,7 +9,8 @@ module.exports = {
           blue_button: "#7983FF",
           graphite: "#424250",
           purple: "#AB80FF",
-          grey: "#3D3D3D"
+          grey: "#3D3D3D",
+          lilac: "#DEDFFF",
       },
 
       fontSize: {

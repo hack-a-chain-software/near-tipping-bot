@@ -11,14 +11,14 @@ function Index() {
     <div className="font-sans">
       <NavBar />
 
-      <div className="bg-lpbg bg-cover bg-clip-content">
+      {/* <div className="bg-lpbg bg-cover bg-clip-content">
         <SendToken />
         <HowToUse />
         <AvaiableTokens />
         <RegisterToken />
       </div>
 
-      <Footer />
+      <Footer /> */}
     </div>
 
 
