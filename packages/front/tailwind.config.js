@@ -18,6 +18,7 @@ module.exports = {
       },
       backgroundImage: {
         "lpbg": "url('/images/bg_landing_page_1x.jpg')",
+        "bgbutton": "linear-gradient(270deg, #7983FF 47.22%, #FC89F7 100%)"
 
       },
 
