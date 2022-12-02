@@ -1,0 +1,24 @@
+services:
+  db:
+    image: ghcr.io/hack-a-chain-software/near-tipping-bot/db:latest
+    build:
+      dockerfile: ./packages/db/Dockerfile
+    user: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ntb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./packages/db/migrations/committed:/docker-entrypoint-initdb.d
+    networks:
+      - ntb
+
+volumes:
+  pg_data:
+
+
+networks:
+  ntb: {}
