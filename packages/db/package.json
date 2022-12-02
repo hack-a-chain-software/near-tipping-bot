@@ -1,0 +1,16 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "gm": "DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@localhost/ntb SHADOW_DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@localhost/ntb_shadow ROOT_DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@localhost/postgres graphile-migrate",
+    "commit": "gm commit",
+    "uncommit": "gm uncommit",
+    "seed": "gm run src/seeds.sql",
+    "migrate": "gm migrate"
+  },
+  "devDependencies": {
+    "graphile-migrate": "^1.4.0"
+  }
+}
