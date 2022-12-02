@@ -48,4 +48,3 @@ module.exports = {
     await interaction.reply({ content: command.node.message, ephemeral: true });
   },
 };
-
