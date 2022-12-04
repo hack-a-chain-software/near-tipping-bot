@@ -80,7 +80,7 @@ module.exports = {
     }
 
     await interaction.reply({
-      content: `Click the link to transfer: https://peterthebot.com?token=${token.metadata.name}&amount=${amount}&receiver=${userWallet}&burner=${burnWallet}`,
+      content: `Click the link to transfer: https://peterthebot.com?token=${token.metadata.name}&amount=${amount}&receiver=${userWallet.node.wallet}&burner=${burnWallet}`,
       ephemeral: true,
     });
   },
