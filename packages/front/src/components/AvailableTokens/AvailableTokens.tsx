@@ -18,43 +18,38 @@ export const AvaiableTokens = () => {
       </svg>
 
 
-
-
-
-
-
       <h2 className=" font-extrabold text-fS32px text-center pt-12 pb-22">Our<span className="text-purple my-4"> available tokens</span></h2>
 
       <div className="my-24 mx-14 lg:mx-24 flex flex-col justify-between lg:grid lg:grid-cols-5 gap-5">
-        <div className="bg-black rounded-md flex inline-flex items-center justify-center  w-full p-4 z-50">
+        <div className="bg-black shadow-how_to_use_shadow rounded-md flex inline-flex items-center justify-center  w-full p-4 z-50">
           <img src="\images\BTC.png" alt="Bitcoin"></img>
           <p className="font-medium text-3xl px-4">BTC</p>
         </div>
 
-        <div className="bg-black rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
+        <div className="bg-black shadow-how_to_use_shadow rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
           <img src="\images\AVAX.png" alt="AVAX"></img>
           <p className="font-medium text-3xl px-4">AVAX</p>
         </div>
 
-        <div className="bg-black rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
+        <div className="bg-black shadow-how_to_use_shadow rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
           <img src="\images\SOL.png" alt="SOL"></img>
           <p className="font-medium text-3xl px-4">SOL</p>
         </div>
 
-        <div className="bg-black rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
+        <div className="bg-black shadow-how_to_use_shadow rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
           <img src="\images\SAND.png" alt="SAND"></img>
           <p className="font-medium text-3xl px-4">SAND</p>
         </div>
 
-        <div className="bg-black rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
+        <div className="bg-black shadow-how_to_use_shadow rounded-md flex inline-flex items-center justify-center w-full p-4 z-50">
           <img src="\images\DAI.png" alt="DAI"></img>
           <p className="font-medium text-3xl px-4">DAI</p>
         </div>
 
       </div>
 
-      <button className="text-white flex rounded-full  p-2.5 justify-between w-1/8 text-xl  inline-flex items-center
-          bg-gradient-to-r from-pink to-blue_button " type="button">
+      <button className="text-white flex rounded-full  py-3 px-2.5 justify-between w-1/8 text-xl  inline-flex items-center
+          bg-bgbutton" type="button">
         <span className=" font-medium px-4 text-xl"  > See all tokens </span>
       </button>
     </section>

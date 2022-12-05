@@ -18,12 +18,12 @@ export const HowToUse = () => {
       <h2 className=" font-extrabold text-fS32px text-center pt-4 pb-22  mt-0 mb-12">How to <span className="text-pink my-4">use</span></h2>
 
 
-      <div className="my-2/3 mx-6 lg:my-24 lg:mx-24 flex flex-col lg:block lg:grid lg:grid-cols-4 gap-12 ">
+      <div className="my-2/3 mx-6 lg:my-24 lg:mx-36 flex flex-col lg:block lg:grid lg:grid-cols-4 ">
 
-          <div className="items-center text-center z-50">
+          <div className="items-center text-center z-40 w-9/12">
               <h3 className="pb-8 font-extrabold text-xl">Step 1</h3>
 
-              <div className="bg-black bg-opacity-60 rounded-md p-8 h-5/6 drop-shadow-lg ">
+              <div className="bg-black bg-opacity-60 rounded-lg p-8 h-5/6 shadow-how_to_use_shadow z-50">
 
                   <div className="font-extrabold text-2xl pb-4">
                       <h3 className="pb-1">Register</h3>
@@ -34,10 +34,10 @@ export const HowToUse = () => {
               </div>
           </div>
 
-          <div className="items-center text-center drop-shadow-lg z-50">
+          <div className="items-center text-center z-50 w-9/12">
               <h3 className="pb-8 font-extrabold text-xl">Step 2</h3>
 
-              <div className="bg-black bg-opacity-60 rounded-md p-8 h-5/6">
+              <div className="bg-black bg-opacity-60 rounded-lg p-8 h-5/6 items-center shadow-how_to_use_shadow">
 
                   <div className="font-extrabold text-2xl pb-4">
                       <h3 className="pb-1">Enable</h3>
@@ -48,9 +48,9 @@ export const HowToUse = () => {
               </div>
           </div>
 
-          <div className="items-center text-center drop-shadow-lg z-50">
+          <div className="items-center text-center  z-50 w-9/12">
               <h3 className="pb-8 font-extrabold text-xl">Step 3</h3>
-              <div className="bg-black bg-opacity-60 rounded-md p-8 h-5/6 items-center">
+              <div className="bg-black bg-opacity-60 rounded-lg p-8 h-5/6 items-center shadow-how_to_use_shadow">
                   <div className="font-extrabold text-2xl pb-4">
                       <h3 className=" pb-1">Set</h3>
                       <span className="text-pink">Tokens</span>
@@ -62,9 +62,9 @@ export const HowToUse = () => {
               </div>
           </div>
 
-          <div className="items-center text-center drop-shadow-lg z-50">
+          <div className="items-center text-center  z-50 w-9/12">
               <h3 className="pb-8 font-extrabold text-xl ">Step 4</h3>
-              <div className="bg-black bg-opacity-60 rounded-md p-8 h-5/6 ">
+              <div className="bg-black bg-opacity-60 rounded-lg p-8 h-5/6 shadow-how_to_use_shadow">
                   <div className="font-extrabold text-2xl pb-4">
                       <h3 className="pb-1">Send</h3>
                       <span className="text-pink">Tokens</span>

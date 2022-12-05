@@ -40,8 +40,8 @@ export const RegisterToken = () => {
         <div className="flex flex-col items-center px-8">
           <p className="text-center pb-12 font-normal text-xl">Make a request to add a new token <br className="hidden lg:block"></br>
             through google forms by clicking the button below</p>
-          <button className="text-white flex rounded-full  p-2.5 justify-between w-1/8 text-xl  inline-flex items-center
-                      bg-gradient-to-r from-pink to-blue_button bottom-0 " type="button">
+          <button className="text-white flex rounded-full py-3 px-2.5 justify-between w-1/8 text-xl  inline-flex items-center
+                      bg-bgbutton bottom-0 " type="button">
             <span className=" font-medium px-4 text-xl"  > Click here to request </span>
           </button>
         </div>
