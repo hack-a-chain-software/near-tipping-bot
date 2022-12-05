@@ -4,7 +4,7 @@ import { SendtokenAsset } from "../assets/sendtokenasset";
 export const SendToken = () => {
   return (
 
-      <section id="easiest_send_cryptocurrencies" className="text-white flex py-20 justify-around m-auto relative">
+      <section id="easiest_send_cryptocurrencies" className="text-white flex py-32 justify-around m-auto relative">
         <SendtokenAsset></SendtokenAsset>
           <div className="lg:flex lg:flex-col lg:justify-center lg:items-start lg:m-auto lg:w-1/3 lg:space-y-4 z-50  max-w-[1440px] mx-auto">
               <h2 className="font-extrabold p-5 text-4xl ">Send <span className="text-azoxo"> NEAR </span> and <span className="text-azoxo"> NEP-141</span> tokens

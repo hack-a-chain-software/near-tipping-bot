@@ -1,15 +1,19 @@
+import { HowToUseAsset } from "../assets/howtouseassets";
+import { PurpleStarHowToUse } from "../assets/howtouseassets";
+import { WhiteStarHowToUse } from "../assets/howtouseassets";
+
 export const HowToUse = () => {
   return(
 
-      <section id="how_to_use" className=" text-white m-auto  px-2 py-32  justify-between">
+      <section id="how_to_use" className=" text-white m-auto  px-2 py-32  justify-between bg-black/[0.2] relative z-20">
+        <HowToUseAsset></HowToUseAsset>
+        <svg className="absolute top-[430px] left-0  z-40" width="180" height="600" viewBox="0 0 166 552" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-303.256 429.714C-345.109 374.079 -382.679 307.872 -368.546 239.666C-355.129 174.917 -286.981 144.377 -235.527 102.852C-183.637 60.9745 -138.659 -7.00511 -72.4589 0.71323C-6.33507 8.4227 20.8879 85.4979 62.3539 137.582C103.729 189.553 168.744 232.958 165.276 299.327C161.724 367.311 97.8617 411.455 45.7561 455.267C-8.33632 500.75 -63.7684 556.311 -134.219 551.153C-206.156 545.886 -259.892 487.357 -303.256 429.714Z" fill="#424250" />
+        </svg>
+        <PurpleStarHowToUse></PurpleStarHowToUse>
+        <WhiteStarHowToUse></WhiteStarHowToUse>
 
-      <svg className="absolute  right-0  top-[950px] z-40" width="100"   height="800" viewBox="0 0 111 698" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M710.977 424.602C690.228 523.244 653.878 627.288 566.106 676.854C482.782 723.909 384.597 678.69 290.346 662.14C195.295 645.451 78.3885 661.166 23.7431 581.623C-30.8397 502.171 27.2051 399.056 44.4557 304.218C61.6687 209.588 47.0331 97.3386 122.646 37.8914C200.099 -23.0032 309.023 4.58383 406.387 19.6651C507.463 35.3215 620.797 42.837 682.281 124.577C745.062 208.041 732.476 322.399 710.977 424.602Z" fill="#424250"/>
-      </svg>
 
-      <svg className="absolute top-[1400px] right-[30px] z-50"width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10.9238 0.908445C11.2935 -0.0906252 12.7065 -0.0906209 13.0762 0.908449L15.5982 7.72386C15.7144 8.03797 15.962 8.28562 16.2761 8.40185L23.0916 10.9238C24.0906 11.2935 24.0906 12.7065 23.0916 13.0762L16.2761 15.5982C15.962 15.7144 15.7144 15.962 15.5982 16.2761L13.0762 23.0916C12.7065 24.0906 11.2935 24.0906 10.9238 23.0916L8.40185 16.2761C8.28562 15.962 8.03797 15.7144 7.72386 15.5982L0.908445 13.0762C-0.0906252 12.7065 -0.0906209 11.2935 0.908449 10.9238L7.72386 8.40185C8.03797 8.28562 8.28562 8.03797 8.40185 7.72386L10.9238 0.908445Z" fill="#6D71FF"/>
-      </svg>
 
       <h2 className=" font-extrabold text-fS32px text-center pt-4 pb-22  mt-0 mb-12">How to <span className="text-pink my-4">use</span></h2>
 
