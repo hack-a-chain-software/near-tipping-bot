@@ -1,3 +1,5 @@
+import { NavHashLink } from "react-router-hash-link";
+
 export const NavBar = () => {
   return (
     <nav className="bg-black bg-cover bg-center font-extrabold text-white flex flex-col lg:flex-row lg:justify-between">
@@ -8,9 +10,15 @@ export const NavBar = () => {
         </p>
       </div>
       <div className="py-4 lg:mr-36 text-center lg:flex">
-        <p className="p-4">How to use</p>
-        <p className="p-4">Token List</p>
-        <p className="p-4">Token Request</p>
+        <NavHashLink smooth to="/#how_to_use" className="p-4">
+          How to use
+        </NavHashLink>
+        <NavHashLink smooth to="/#available_tokens" className="p-4">
+          Token List
+        </NavHashLink>
+        <NavHashLink smooth to="/#register_token" className="p-4">
+          Token Request
+        </NavHashLink>
       </div>
     </nav>
   );

@@ -10,13 +10,19 @@ module.exports = {
         graphite: "#424250",
         purple: "#AB80FF",
         grey: "#3D3D3D",
+        lilac: "#DEDFFF",
       },
+
       fontSize: {
         fS32px: "32px",
       },
       backgroundImage: {
         lpbg: "url('/images/bg_landing_page_1x.jpg')",
-        button: "linear-gradient(270deg, #7983FF 47.22%, #FC89F7 100%)",
+        bgbutton: "linear-gradient(270deg, #7983FF 47.22%, #FC89F7 100%)",
+      },
+
+      boxShadow: {
+        how_to_use_shadow: "0px 2.84008px 35.501px rgba(171, 128, 255, 0.1)",
       },
     },
   },

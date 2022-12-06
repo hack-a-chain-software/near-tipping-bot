@@ -1,4 +1,4 @@
-export const ButtonLP = () => {
+export const ButtonSendToken = () => {
   return (
     <button
       className="flex items-center text-white rounded-full  mx-auto px-5  py-3 text-xl  justify-between
@@ -24,4 +24,4 @@ export const ButtonLP = () => {
     </button>
   );
 };
-export default ButtonLP;
+export default ButtonSendToken;

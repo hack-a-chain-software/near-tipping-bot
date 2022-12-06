@@ -1,8 +1,8 @@
-export const HowToUseAsset = () => {
+export const HowToUseRightAsset = () => {
   return (
     <div>
       <svg
-        className="absolute  right-0  top-[120px] z-40"
+        className=" hidden lg:block absolute  right-0  top-[120px] z-40"
         width="100"
         height="800"
         viewBox="0 0 111 698"
@@ -32,4 +32,4 @@ export const HowToUseAsset = () => {
   );
 };
 
-export default HowToUseAsset;
+export default HowToUseRightAsset;
