@@ -3,6 +3,7 @@ import { PurpleStarHowToUse } from "../assets/howtouseasset";
 import { WhiteStarHowToUse } from "../assets/howtouseasset";
 import { HowToUseLeftAsset } from "../assets/howtouseasset"
 
+
 export const HowToUse = () => {
   return(
 
