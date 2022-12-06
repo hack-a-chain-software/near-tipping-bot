@@ -1,4 +1,4 @@
-export const ButtonLP = () => {
+export const ButtonSendToken = () => {
   return (
     <button className="flex items-center text-white rounded-full  mx-auto px-5  py-3 text-xl  justify-between
           bg-bgbutton lg:mx-0 lg:mr-auto lg:my-4 align-middle" type="button">
@@ -11,4 +11,4 @@ export const ButtonLP = () => {
 
   );
 }
-export default ButtonLP;
+export default ButtonSendToken;

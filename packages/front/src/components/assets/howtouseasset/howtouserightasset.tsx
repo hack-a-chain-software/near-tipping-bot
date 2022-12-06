@@ -1,7 +1,7 @@
-export const HowToUseAsset = () => {
+export const HowToUseRightAsset = () => {
   return (
     <div>
-      <svg className="absolute  right-0  top-[120px] z-40" width="100" height="800" viewBox="0 0 111 698" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg className=" hidden lg:block absolute  right-0  top-[120px] z-40" width="100" height="800" viewBox="0 0 111 698" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M710.977 424.602C690.228 523.244 653.878 627.288 566.106 676.854C482.782 723.909 384.597 678.69 290.346 662.14C195.295 645.451 78.3885 661.166 23.7431 581.623C-30.8397 502.171 27.2051 399.056 44.4557 304.218C61.6687 209.588 47.0331 97.3386 122.646 37.8914C200.099 -23.0032 309.023 4.58383 406.387 19.6651C507.463 35.3215 620.797 42.837 682.281 124.577C745.062 208.041 732.476 322.399 710.977 424.602Z" fill="#424250" />
       </svg>
 
@@ -13,4 +13,4 @@ export const HowToUseAsset = () => {
 
 }
 
-export default HowToUseAsset;
+export default HowToUseRightAsset;

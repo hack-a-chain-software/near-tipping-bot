@@ -1,4 +1,4 @@
-import { ButtonLP } from "../button_lp";
+import { ButtonSendToken } from "./button_send_token";
 import { SendtokenAsset } from "../assets/sendtokenasset";
 
 export const SendToken = () => {
@@ -12,7 +12,7 @@ export const SendToken = () => {
               <img className="p-5 lg:hidden " src="/images/wave_tipping_bot.png" alt="tipping bot waving"></img>
               <p className="font-medium text-xl text-justify px-5 pb-8">Engage your community with ranking, social score, and token
                   submissions with no fees, without opening your wallet.</p>
-              <ButtonLP></ButtonLP>
+              <ButtonSendToken></ButtonSendToken>
           </div>
 
           <div className="hidden lg:block lg:w-1/3 flex lg:items-center lg:m-auto  max-w-[1440px] mx-auto z-50">
