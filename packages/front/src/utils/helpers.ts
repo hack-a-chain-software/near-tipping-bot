@@ -174,7 +174,7 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        10000000000000,
+        10000000000000 as any,
         utils.format.parseNearAmount("0.01") as any
       )
     );
@@ -189,7 +189,7 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        10000000000000,
+        10000000000000 as any,
         utils.format.parseNearAmount("0.01") as any
       )
     );
@@ -204,7 +204,7 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        10000000000000,
+        10000000000000 as any,
         utils.format.parseNearAmount("0.01") as any
       )
     );
@@ -221,7 +221,7 @@ export async function initializeTokenContract(address, receiver, amount) {
           msg: JSON.stringify({ receiver }),
         })
       ),
-      260000000000000,
+      260000000000000 as any,
       "1" as any
     )
   );
