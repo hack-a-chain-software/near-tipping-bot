@@ -31,19 +31,61 @@ jobs:
       - name: Lib Tests
         run: yarn contracts test:lib
 
-  cypress-run:
+  cypress-install:
     runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node18.12.0-chrome103-ff107
+      options: --user 1001 # READ: https://github.com/cypress-io/github-action/issues/446
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install Yarn Globally
-        run: npm install -g yarn
+      - name: Output Yarn cache directory
+        id: yarn-cache-dir
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Yarn install
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cypress install
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          runTests: false
+          install-command: yarn
+          build: yarn front build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: ./packages/front/dist
+          if-no-files-found: error
+
+  cypress-run:
+    needs: cypress-install
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node18.12.0-chrome103-ff107
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download build folder
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: ./packages/front/dist
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          record: false
           browser: chrome
           install-command: yarn
           build: yarn front build
