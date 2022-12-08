@@ -13,16 +13,10 @@ module.exports = {
 
     const server = await findServerById(id);
 
-    if (!server) {
-      await interaction.editReply({
-        content:
-          "This server has not yet been registered. Use the /register command to register your server",
-      });
-      return;
-    }
+    const replyContent = server
+      ? `Hey ${username}, your server is already registered`
+      : "This server has not yet been registered. Use the /register command to register your server";
 
-    await interaction.editReply({
-      content: `Hey ${username}, your server is already registered`,
-    });
+    await interaction.reply({ content: replyContent });
   },
 };

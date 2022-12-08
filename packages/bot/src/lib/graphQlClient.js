@@ -7,11 +7,9 @@ const fetch = require("node-fetch");
 
 const graphQlClient = new ApolloClient({
   link: new HttpLink({
-    uri: process.env.API_URL,
+    uri: `http://localhost:${process.env.GRAPHQL_PORT}/graphql`,
     fetch,
-    headers: {
-      apiKey: process.env.API_KEY,
-    },
+    headers: {},
   }),
   cache: new InMemoryCache(),
 });

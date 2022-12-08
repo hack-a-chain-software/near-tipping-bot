@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const listAllTokens = require("../graphql/queries/listAllTokensIntoDatabase");
-const insertTokenIntoServer = require("../graphql/mutations/insertTokenIntoServer");
+const listTokens = require("../graphql/queries/listTokens");
+const insertServerToken = require("../graphql/mutations/insertServerToken");
 const findDuplicatePkError = require("../utils/findDuplicatePkError");
 const findServerNotRegistered = require("../utils/findServerNotRegisteredError");
 
@@ -20,7 +20,7 @@ module.exports = {
   async autocomplete(interaction) {
     const focusedValue = interaction.options.getFocused();
 
-    const tokens = await listAllTokens();
+    const tokens = await listTokens();
 
     const filtered = tokens.filter(({ metadata }) =>
       metadata.name.startsWith(focusedValue)
@@ -38,7 +38,7 @@ module.exports = {
     const serverId = interaction.member.guild.id;
 
     try {
-      await insertTokenIntoServer(serverId, tokenId);
+      await insertServerToken(serverId, tokenId);
 
       await interaction.reply({
         content: `Hey ${username}, the token has been added to your server`,

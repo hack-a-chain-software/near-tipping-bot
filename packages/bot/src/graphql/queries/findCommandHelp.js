@@ -1,21 +1,21 @@
 const { gql } = require("@apollo/client/core");
 const { graphQlClient } = require("../../lib/graphQlClient");
 
-module.exports = async (serverId) => {
+module.exports = async (command) => {
   const { data } = await graphQlClient.query({
     query: gql`
-      query FindServerById($id: BigInt!) {
-        serverById(id: $id) {
+      query FindCommandHelp($command: String!) {
+        helpByCommand(command: $command) {
           nodeId
-          id
-          name
+          command
+          message
         }
       }
     `,
     variables: {
-      id: serverId,
+      command,
     },
   });
 
-  return data.serverById;
+  return data.helpByCommand;
 };

@@ -4,9 +4,10 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (id, metadata) => {
   const { data } = await graphQlClient.mutate({
     mutation: gql`
-      mutation InsertTokenIntoDatabase($objects: tokensInsertInput) {
-        insertIntotokensCollection(objects: [$objects]) {
-          records {
+      mutation InsertToken($id: String, $metadata: JSON!) {
+        createToken(input: { token: { id: $id, metadata: $metadata } }) {
+          token {
+            nodeId
             id
             metadata
           }
@@ -16,9 +17,10 @@ module.exports = async (id, metadata) => {
     variables: {
       objects: {
         id,
-        metadata: JSON.stringify(metadata),
+        metadata,
       },
     },
   });
+
   return data;
 };

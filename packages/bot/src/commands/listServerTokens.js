@@ -8,6 +8,7 @@ module.exports = {
 
   async execute(interaction) {
     const { id } = interaction.member.guild;
+
     const tokens = await listServerTokens(id);
 
     const embed = new EmbedBuilder()

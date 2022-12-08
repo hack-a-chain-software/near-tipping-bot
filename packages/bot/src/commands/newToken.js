@@ -19,7 +19,7 @@ module.exports = {
     const tokenInput = new TextInputBuilder()
       .setCustomId("tokenName")
       .setLabel("Which token do you want ?")
-      .setPlaceholder("Etherium")
+      .setPlaceholder("Ethereum")
       .setRequired(true)
       .setMinLength(2)
       .setStyle(TextInputStyle.Short);

@@ -4,9 +4,10 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (id, name) => {
   const result = await graphQlClient.mutate({
     mutation: gql`
-      mutation RegisterServer($objects: serverInsertInput!) {
-        insertIntoserversCollection(objects: [$objects]) {
-          records {
+      mutation InsertServer($server: ServerInput!) {
+        createServer(input: { server: $server }) {
+          server {
+            nodeId
             id
             name
           }
@@ -14,7 +15,7 @@ module.exports = async (id, name) => {
       }
     `,
     variables: {
-      objects: {
+      server: {
         id,
         name,
       },

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const listServerTokens = require("../graphql/queries/listServerTokens");
-const deleteTokenFromList = require("../graphql/mutations/deleteServerToken");
+const deleteServerToken = require("../graphql/mutations/deleteServerToken");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -36,7 +36,7 @@ module.exports = {
     const tokenId = interaction.options.getString("token");
     const serverId = interaction.member.guild.id;
 
-    const token = await deleteTokenFromList(tokenId, serverId);
+    const token = await deleteServerToken(tokenId, serverId);
 
     if (!token) {
       await interaction.reply({

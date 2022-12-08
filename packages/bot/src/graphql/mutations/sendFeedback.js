@@ -4,24 +4,37 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (userId, serverId, username, message) => {
   const { data } = await graphQlClient.mutate({
     mutation: gql`
-      mutation SendFeedback($objects: feedbacksInsertInput) {
-        insertIntofeedbacksCollection(objects: [$objects]) {
-          records {
+      mutation SendFeedback(
+        $serverId: BigInt!
+        $userId: BigInt!
+        $username: String!
+        $message: String!
+      ) {
+        createFeedback(
+          input: {
+            feedback: {
+              userId: $userId
+              serverId: $serverId
+              username: $username
+              message: $message
+            }
+          }
+        ) {
+          feedback {
+            nodeId
             id
             username
             message
-            submitted_at
+            submittedAt
           }
         }
       }
     `,
     variables: {
-      objects: {
-        user_id: userId,
-        server_id: serverId,
-        username,
-        message,
-      },
+      userId,
+      serverId,
+      username,
+      message,
     },
   });
 

@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
+const getSendParameters = require("../graphql/queries/getSendParameters");
 const listServerTokens = require("../graphql/queries/listServerTokens");
-const findUserWallet = require("../graphql/queries/findUserWallet");
-const findToken = require("../graphql/queries/findToken");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -22,7 +21,7 @@ module.exports = {
     )
     .addUserOption((option) =>
       option
-        .setName("address")
+        .setName("receiver")
         .setDescription("The receiving user (wallet must be saved)")
         .setRequired(true)
     ),
@@ -46,33 +45,32 @@ module.exports = {
   async execute(interaction) {
     const burnWallet = null;
 
-    const { user: username } = interaction;
-
+    const { user: sender } = interaction;
     const serverId = interaction.member.guild.id;
 
-    const amount = interaction.options.getNumber("amount");
-
-    const address = interaction.options.getUser("address");
-
     const tokenId = interaction.options.getString("token");
+    const amount = interaction.options.getNumber("amount");
+    const receiver = interaction.options.getUser("receiver");
 
-    const userWallet = await findUserWallet(address.id, serverId);
-
-    const token = await findToken(tokenId, serverId);
+    const {
+      token,
+      wallet,
+      // TODO: make it work without autocomplete (fetch by token name if necessary)
+    } = await getSendParameters(serverId, receiver.id, tokenId);
 
     if (!token) {
       await interaction.reply({
         content:
-          "That token is unavalible. Please, pick one of the tokens listed on this server",
+          "That token is unavailable. Please, pick one of the tokens listed on this server",
         ephemeral: true,
       });
 
       return;
     }
 
-    if (!userWallet) {
+    if (!wallet) {
       await interaction.reply({
-        content: `Hey ${address}, ${username} is trying to send you ${amount} ${token.metadata.name}. Please, register your wallet using /setwallet `,
+        content: `Hey ${receiver}, ${sender} is trying to send you ${amount} ${token.metadata.name}. Please, register your wallet using /setwallet`,
         ephemeral: false,
       });
 
@@ -80,7 +78,8 @@ module.exports = {
     }
 
     await interaction.reply({
-      content: `Click the link to transfer: https://peterthebot.com?token=${token.metadata.name}&amount=${amount}&receiver=${userWallet.node.wallet}&burner=${burnWallet}`,
+      // TODO: check if /transactions/? or /transactions?
+      content: `Click the link to transfer: https://peterthebot.com/transactions/?token=${token.metadata.name}&amount=${amount}&receiver=${wallet}&burner=${burnWallet}`,
       ephemeral: true,
     });
   },

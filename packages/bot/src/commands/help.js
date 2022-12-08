@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
-const findSubCommand = require("../graphql/queries/findSubCommand");
-const listHelpCommands = require("../graphql/queries/listHelpCommands");
+const findCommandHelp = require("../graphql/queries/findCommandHelp");
+const listHelps = require("../graphql/queries/listHelps");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,7 +17,7 @@ module.exports = {
   async autocomplete(interaction) {
     const focusedValue = interaction.options.getFocused();
 
-    const helpCommands = await listHelpCommands();
+    const helpCommands = await listHelps();
 
     const filtered = helpCommands.filter(({ command }) =>
       command.startsWith(focusedValue)
@@ -34,7 +34,7 @@ module.exports = {
   async execute(interaction) {
     const commandName = interaction.options.getString("command");
 
-    const command = await findSubCommand(commandName);
+    const command = await findCommandHelp(commandName);
 
     if (!command) {
       await interaction.reply({
@@ -45,6 +45,6 @@ module.exports = {
       return;
     }
 
-    await interaction.reply({ content: command.node.message, ephemeral: true });
+    await interaction.reply({ content: command.message, ephemeral: true });
   },
 };

@@ -4,25 +4,20 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (userId, serverId) => {
   const { data } = await graphQlClient.query({
     query: gql`
-      query findUserWallet($user_id: String, $server_id: String) {
-        walletsCollection(
-          filter: { user_id: { eq: $user_id }, server_id: { eq: $server_id } }
-        ) {
-          edges {
-            node {
-              wallet
-            }
-          }
+      query FindUserWallet($userId: BigInt!, $serverId: BigInt!) {
+        walletByUserIdAndServerId(userId: $userId, serverId: $serverId) {
+          nodeId
+          userId
+          serverId
+          wallet
         }
       }
     `,
     variables: {
-      user_id: userId,
-      server_id: serverId,
+      userId,
+      serverId,
     },
   });
 
-  const { walletsCollection } = data;
-
-  return walletsCollection.edges[0];
+  return data.walletByUserIdAndServerId;
 };
