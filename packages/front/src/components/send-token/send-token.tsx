@@ -15,6 +15,7 @@ export const SendToken = () => {
           discord.
         </h2>
         <img
+          loading="lazy"
           className="p-5 lg:hidden "
           src="/images/wave_tipping_bot.png"
           alt="tipping bot waving"
@@ -27,7 +28,11 @@ export const SendToken = () => {
       </div>
 
       <div className="hidden lg:block lg:w-1/3 flex lg:items-center lg:m-auto  max-w-[1440px] mx-auto z-50">
-        <img src="/images/wave_tipping_bot.png" alt="tipping bot waving"></img>
+        <img
+          loading="lazy"
+          src="/images/wave_tipping_bot.png"
+          alt="tipping bot waving"
+        ></img>
       </div>
     </section>
   );

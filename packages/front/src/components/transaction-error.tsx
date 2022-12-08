@@ -3,6 +3,7 @@ export const TransactionError = () => {
     <div className="flex bg-grey font-sans  text-white flex-col mb-0 pb-0 items-stretch ">
       <div className="flex flex-col lg:flex-row justify-center text-center items-center   min-h-screen">
         <img
+          loading="lazy"
           src="\images\tipping_bot_transaction_error.png"
           className="mx-0 pr-0"
         ></img>

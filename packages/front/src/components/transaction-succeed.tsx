@@ -3,6 +3,7 @@ export const TransactionSucceed = () => {
     <div className="flex bg-grey font-sans  text-white flex-col mb-0 pb-0 items-stretch ">
       <div className="flex flex-col lg:flex-row justify-center text-center items-center   min-h-screen">
         <img
+          loading="lazy"
           src="\images\tipping_bot_transaction_succeed.png"
           alt="tipping bot happy"
         ></img>
@@ -24,7 +25,7 @@ export const TransactionSucceed = () => {
                   type="submit"
                   className=" px-1 bg-lilac  h-10  rounded-r-xl border-l-0  border-2 border-purple border-l-0 "
                 >
-                  <img src="\assets\copy-icon.png"></img>
+                  <img loading="lazy" src="\assets\copy-icon.png"></img>
                 </button>
               </form>
             </div>
