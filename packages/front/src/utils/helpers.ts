@@ -105,7 +105,7 @@ export async function initializeTokenContract(address, receiver, amount) {
 
   let decimals;
   try {
-    const { result } = (await provider.query({
+    const rawTokenSpecs = (await provider.query({
       request_type: "call_function",
       account_id: address,
       method_name: "ft_metadata",
@@ -113,7 +113,7 @@ export async function initializeTokenContract(address, receiver, amount) {
       finality: "optimistic",
     })) as any;
 
-    const tokenSpecs = JSON.parse(Buffer.from(result).toString());
+    const tokenSpecs = JSON.parse(Buffer.from(rawTokenSpecs.result).toString());
 
     decimals = tokenSpecs.decimals;
   } catch (err) {
@@ -174,7 +174,7 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        new BN("10000000000000"),
+        10000000000000,
         utils.format.parseNearAmount("0.01") as any
       )
     );
@@ -189,7 +189,7 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        new BN("10000000000000"),
+        10000000000000,
         utils.format.parseNearAmount("0.01") as any
       )
     );
@@ -204,7 +204,7 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        new BN("10000000000000"),
+        10000000000000,
         utils.format.parseNearAmount("0.01") as any
       )
     );
@@ -221,7 +221,7 @@ export async function initializeTokenContract(address, receiver, amount) {
           msg: JSON.stringify({ receiver }),
         })
       ),
-      new BN("260000000000000"),
+      260000000000000,
       "1" as any
     )
   );
