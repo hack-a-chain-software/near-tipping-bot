@@ -9,6 +9,7 @@ module.exports = async (client) => {
   const commandFiles = readdirSync(commandsPath).filter((file) =>
     file.endsWith(".js")
   );
+
   const restClient = new REST({ version: "9" }).setToken(process.env.BOT_TOKEN);
 
   for (const file of commandFiles) {
@@ -24,6 +25,7 @@ module.exports = async (client) => {
       );
     }
   }
+
   await restClient.put(Routes.applicationCommands(process.env.CLIENT_ID), {
     body: slashCommands,
   });
