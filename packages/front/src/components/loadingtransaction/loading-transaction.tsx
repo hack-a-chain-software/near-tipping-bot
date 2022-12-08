@@ -2,7 +2,8 @@ export const LoadingTransaction = () => {
   return (
     <div className="flex justify-center flex-col lg:flex-row text-center items-center min-h-screen bg-grey font-sans  text-white">
       <img
-        src="\images\tipping_bot_loading_page.png"
+        loading="lazy"
+        src="/images/tipping_bot_loading_page.png"
         alt="Tiping bot waving"
         className="mx-0 pr-0"
       />

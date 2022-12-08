@@ -20,7 +20,11 @@ export const RegisterToken = () => {
       </p>
 
       <div className="flex flex-col lg:flex-row items-center pt-8 pb-4 my-14 z-50">
-        <img src="\images\tipping_bot.png" alt="Tipping bot"></img>
+        <img
+          loading="lazy"
+          src="/images/tipping_bot.png"
+          alt="Tipping bot"
+        ></img>
         <div className="flex flex-col items-center px-8">
           <p className="text-center pb-12 font-normal text-xl">
             Make a request to add a new token{" "}
