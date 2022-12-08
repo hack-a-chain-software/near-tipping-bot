@@ -1,18 +1,5 @@
-import { LoadingTransaction } from "@/components/loadingtransaction";
-import { TransactionSucceed } from "@/components/transactionsucceed";
-import { TransactionError } from "@/components/transactionerror";
-import { useState } from "react";
+export const Transaction = () => {
+  return <div></div>;
+};
 
-function transaction() {
-  const x = useState;
-  return (
-    <div>
-      {/* <LoadingTransaction></LoadingTransaction>
-       <TransactionSucceed></TransactionSucceed>
-      <TransactionError></TransactionError>
-      */}
-    </div>
-  );
-}
-
-export default transaction;
+export default Transaction;

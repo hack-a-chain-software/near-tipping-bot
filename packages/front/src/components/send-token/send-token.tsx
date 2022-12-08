@@ -1,4 +1,4 @@
-import { ButtonSendToken } from "./button_send_token";
+import { ButtonSendToken } from "./button-send-token";
 import { SendtokenAsset } from "../assets/sendtokenasset";
 
 export const SendToken = () => {

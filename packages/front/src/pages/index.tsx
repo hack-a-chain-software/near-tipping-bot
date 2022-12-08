@@ -1,10 +1,11 @@
-import { NavBar } from "@/components/navbar";
-
-import { SendToken } from "@/components/sendtoken";
-import { HowToUse } from "@/components/howtouse";
-import { AvaiableTokens } from "@/components/availabletokens";
-import { RegisterToken } from "@/components/registertoken";
-import { Footer } from "@/components/footer";
+import {
+  SendToken,
+  HowToUse,
+  AvaiableTokens,
+  RegisterToken,
+  Footer,
+  NavBar,
+} from "@/components";
 
 function Index() {
   return (

@@ -1,7 +1,9 @@
-import { HowToUseRightAsset } from "../assets/howtouseasset";
-import { PurpleStarHowToUse } from "../assets/howtouseasset";
-import { WhiteStarHowToUse } from "../assets/howtouseasset";
-import { HowToUseLeftAsset } from "../assets/howtouseasset";
+import {
+  HowToUseRightAsset,
+  PurpleStarHowToUse,
+  WhiteStarHowToUse,
+  HowToUseLeftAsset,
+} from "@/components/assets/how-to-use";
 
 export const HowToUse = () => {
   return (

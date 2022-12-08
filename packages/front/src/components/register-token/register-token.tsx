@@ -2,7 +2,7 @@ import { RegisterTokenAsset } from "../assets/registertokenasset";
 import { LeftWhiteStarRegister } from "../assets/registertokenasset";
 import { RightPurpleStarRegister } from "../assets/registertokenasset";
 import { RightWhiteStarRegister } from "../assets/registertokenasset";
-import { ButtonRegisterToken } from "./buttonregistertoken/buttonregistertoken";
+import { ButtonRegisterToken } from "./button";
 
 export const RegisterToken = () => {
   return (
@@ -27,7 +27,8 @@ export const RegisterToken = () => {
             <br className="hidden lg:block"></br>
             through google forms by clicking the button below
           </p>
-          <ButtonRegisterToken></ButtonRegisterToken>
+
+          <ButtonRegisterToken />
         </div>
       </div>
     </section>

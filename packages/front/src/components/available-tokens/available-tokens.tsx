@@ -1,7 +1,9 @@
-import { AvaiableTokensAsset } from "../assets/availabletokensasset";
-import { LeftWhiteStar } from "../assets/availabletokensasset";
-import { RightWhiteStar } from "../assets/availabletokensasset";
-import { ButtonavAilableTokens } from "./buttonavailabletokens/buttonavailabletoken";
+import {
+  AvaiableTokensAsset,
+  LeftWhiteStar,
+  RightWhiteStar,
+} from "../assets/available-tokens";
+import { ButtonavAilableTokens } from "./button";
 
 export const AvaiableTokens = () => {
   return (
