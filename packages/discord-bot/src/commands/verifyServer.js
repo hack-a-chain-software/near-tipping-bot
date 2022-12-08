@@ -8,14 +8,12 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   async execute(interaction) {
-    const { id, name } = interaction.member.guild;
+    const { id } = interaction.member.guild;
     const { user: username } = interaction;
 
-    await interaction.reply("Working on it...");
+    const server = await findServerById(id);
 
-    const { data } = await findServerById(id);
-
-    if (data.serversCollection.edges.length === 0) {
+    if (!server) {
       await interaction.editReply({
         content:
           "This server has not yet been registered. Use the /register command to register your server",

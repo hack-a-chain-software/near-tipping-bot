@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const findUserWallet = require("../graphql/queries/findUserWallet");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -6,23 +7,22 @@ module.exports = {
     .setDescription("Check the wallet that is saved"),
 
   async execute(interaction) {
-    const username = interaction.user.username;
-    const user_id = interaction.user.id;
-    const guild_id = interaction.member.guild.id;
+    const { username, id } = interaction.user;
+    const serverId = interaction.member.guild.id;
 
-    //let walletDB = await mongo.getWallet(user_id, guild_id);
+    const userWallet = await findUserWallet(id, serverId);
 
-    let message;
-
-    // if (walletDB == null) {
-    //   message =
-    //     "There is no wallet registred - please use /setwallet to save your wallet";
-    // } else {
-    //   message = `Hey you ${username}, your wallet is ${walletDB.near_wallet}  `;
-    // }
+    if (!userWallet) {
+      await interaction.reply({
+        content:
+          "There is no wallet registred. Please use /setwallet to save your wallet",
+        ephemeral: true,
+      });
+      return;
+    }
 
     await interaction.reply({
-      content: message,
+      content: `Hey you ${username}, your wallet is ${userWallet.node.wallet}`,
       ephemeral: true,
     });
   },

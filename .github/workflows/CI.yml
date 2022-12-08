@@ -66,29 +66,3 @@ jobs:
           name: build
           path: ./packages/front/dist
           if-no-files-found: error
-
-  cypress-run:
-    needs: cypress-install
-    runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node18.12.0-chrome103-ff107
-      options: --user 1001
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Download build folder
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: ./packages/front/dist
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          install-command: yarn
-          build: yarn front build
-          start: yarn front dev
-
-
