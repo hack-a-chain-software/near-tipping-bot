@@ -13,7 +13,7 @@ export const Transaction = () => {
   const queryParams = new URLSearchParams(window.location.search);
 
   const token = queryParams.get("token");
-  const burner = queryParams.get("burner");
+  // const burner = queryParams.get("burner");
   const amount = queryParams.get("amount");
   const receiver = queryParams.get("receiver");
   const transactionHashes = queryParams.get("transactionHashes");
@@ -26,7 +26,7 @@ export const Transaction = () => {
         if (token === "$NEAR") {
           await sendMoneyCall(receiver, amount);
         } else {
-          initializeTokenContract(token, receiver, amount, burner);
+          initializeTokenContract(token, receiver, amount);
         }
       }
     })();

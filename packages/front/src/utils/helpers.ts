@@ -8,6 +8,18 @@ import {
   providers,
 } from "near-api-js";
 
+import BN from "bn.js";
+
+declare global {
+  interface Window {
+    walletConnection: any;
+    contract: any;
+    receipt: any;
+    result: any;
+    accountId: any;
+  }
+}
+
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const keyStore = new keyStores.BrowserLocalStorageKeyStore();
@@ -37,7 +49,7 @@ const nearConfig = {
 
 //test transaction, if specific error, go for login and redo
 export async function initNear() {
-  const near = await connect(nearConfig);
+  const near = await connect(nearConfig as any);
 
   window.walletConnection = new WalletConnection(near, "The Supah tipping bot");
 
@@ -79,7 +91,7 @@ export async function sendMoneyCall(receiver, amount) {
 
 export async function initializeTokenContract(address, receiver, amount) {
   const account = window.walletConnection.account();
-  let transactionsArray = [];
+  let transactionsArray: any[] = [];
 
   //MAIN NET RPC PROVIDER
   const provider = new providers.JsonRpcProvider(
@@ -93,14 +105,16 @@ export async function initializeTokenContract(address, receiver, amount) {
 
   let decimals;
   try {
-    const rawTokenSpecs = await provider.query({
+    const { result } = (await provider.query({
       request_type: "call_function",
       account_id: address,
       method_name: "ft_metadata",
       args_base64: Buffer.from(JSON.stringify({})).toString("base64"),
       finality: "optimistic",
-    });
-    const tokenSpecs = JSON.parse(Buffer.from(rawTokenSpecs.result).toString());
+    })) as any;
+
+    const tokenSpecs = JSON.parse(Buffer.from(result).toString());
+
     decimals = tokenSpecs.decimals;
   } catch (err) {
     console.log(err);
@@ -108,8 +122,7 @@ export async function initializeTokenContract(address, receiver, amount) {
   }
 
   //treat amount to use decimals
-
-  const rawAccountStorage = await provider.query({
+  const rawAccountStorage = (await provider.query({
     request_type: "call_function",
     account_id: address,
     method_name: "storage_balance_of",
@@ -117,13 +130,13 @@ export async function initializeTokenContract(address, receiver, amount) {
       JSON.stringify({ account_id: account.accountId })
     ).toString("base64"),
     finality: "optimistic",
-  });
+  })) as any;
 
   const accountStorage = JSON.parse(
     Buffer.from(rawAccountStorage.result).toString()
   );
 
-  const rawReceiverStorage = await provider.query({
+  const rawReceiverStorage = (await provider.query({
     request_type: "call_function",
     account_id: address,
     method_name: "storage_balance_of",
@@ -131,13 +144,13 @@ export async function initializeTokenContract(address, receiver, amount) {
       "base64"
     ),
     finality: "optimistic",
-  });
+  })) as any;
 
   const receiverStorage = JSON.parse(
     Buffer.from(rawReceiverStorage.result).toString()
   );
 
-  const rawContractStorage = await provider.query({
+  const rawContractStorage = (await provider.query({
     request_type: "call_function",
     account_id: address,
     method_name: "storage_balance_of",
@@ -145,7 +158,7 @@ export async function initializeTokenContract(address, receiver, amount) {
       JSON.stringify({ account_id: window.contract.contractId })
     ).toString("base64"),
     finality: "optimistic",
-  });
+  })) as any;
 
   let contractStorage = JSON.parse(
     Buffer.from(rawContractStorage.result).toString()
@@ -161,8 +174,8 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        10000000000000,
-        utils.format.parseNearAmount("0.01")
+        new BN("10000000000000"),
+        utils.format.parseNearAmount("0.01") as any
       )
     );
   }
@@ -176,8 +189,8 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        10000000000000,
-        utils.format.parseNearAmount("0.01")
+        new BN("10000000000000"),
+        utils.format.parseNearAmount("0.01") as any
       )
     );
   }
@@ -191,8 +204,8 @@ export async function initializeTokenContract(address, receiver, amount) {
             registration_only: true,
           })
         ),
-        10000000000000,
-        utils.format.parseNearAmount("0.01")
+        new BN("10000000000000"),
+        utils.format.parseNearAmount("0.01") as any
       )
     );
   }
@@ -208,8 +221,8 @@ export async function initializeTokenContract(address, receiver, amount) {
           msg: JSON.stringify({ receiver }),
         })
       ),
-      260000000000000,
-      "1"
+      new BN("260000000000000"),
+      "1" as any
     )
   );
   await account.signAndSendTransaction({

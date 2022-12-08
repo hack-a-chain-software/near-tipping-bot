@@ -20,6 +20,7 @@
     "@near-wallet-selector/sender": "^5.0.3",
     "@near/contracts": "*",
     "autoprefixer": "^10.4.7",
+    "bn.js": "^5.2.1",
     "buffer": "^6.0.3",
     "near-api-js": "^0.44.2",
     "postcss": "^8.4.13",
