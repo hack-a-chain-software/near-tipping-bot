@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const registerServer = require("../graphql/mutations/registerServer");
+const insertServer = require("../graphql/mutations/insertServer");
 const findDuplicatePkError = require("../utils/findDuplicatePkError");
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
     const { user: username } = interaction;
 
     try {
-      await registerServer(id, name);
+      await insertServer(id, name);
 
       await interaction.reply({
         content: `Hey ${username}, your server was registered`,

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const addWallet = require("../graphql/mutations/insertWalletIntoDatabase");
+const insertWallet = require("../graphql/mutations/insertWallet");
 const findDuplicatePkError = require("../utils/findDuplicatePkError");
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
     const serverId = interaction.member.guild.id;
 
     try {
-      await addWallet(id, serverId, nearWallet);
+      await insertWallet(id, serverId, nearWallet);
       await interaction.reply({
         content: `Hey ${username}, your wallet: ${nearWallet} is set`,
         ephemeral: true,

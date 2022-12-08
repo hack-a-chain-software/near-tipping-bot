@@ -4,20 +4,21 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (serverId, tokenId) => {
   const { data } = await graphQlClient.mutate({
     mutation: gql`
-      mutation InsertTokenIntoServer($objects: server_tokensInsertInput) {
-        insertIntoserver_tokensCollection(objects: [$objects]) {
-          records {
-            server_id
-            token_id
+      mutation InsertServerToken($serverId: BigInt!, $tokenId: String!) {
+        createServerToken(
+          input: { serverToken: { serverId: $serverId, tokenId: $tokenId } }
+        ) {
+          serverToken {
+            nodeId
+            serverId
+            tokenId
           }
         }
       }
     `,
     variables: {
-      objects: {
-        server_id: serverId,
-        token_id: tokenId,
-      },
+      serverId,
+      tokenId,
     },
   });
 

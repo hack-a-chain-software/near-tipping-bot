@@ -4,24 +4,26 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (tokenId, serverId) => {
   const { data } = await graphQlClient.mutate({
     mutation: gql`
-      mutation delete($token_id: String, $server_id: String) {
-        deleteFromserver_tokensCollection(
-          filter: { token_id: { eq: $token_id }, server_id: { eq: $server_id } }
+      mutation DeleteServerToken($tokenId: String!, $serverId: BigInt!) {
+        deleteServerTokenByServerIdAndTokenId(
+          input: { serverId: $serverId, tokenId: $tokenId }
         ) {
-          records {
-            token_id
-            server_id
+          serverToken {
+            tokenId
+            serverId
           }
         }
       }
     `,
     variables: {
-      token_id: tokenId,
-      server_id: serverId,
+      tokenId,
+      serverId,
     },
   });
 
+  console.error({ data });
+
   // TODO: cache eviction policy
 
-  return data;
+  return data.deleteServerTokenByServerIdAndTokenId;
 };

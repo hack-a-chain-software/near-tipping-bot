@@ -4,44 +4,30 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (serverId) => {
   const { data } = await graphQlClient.query({
     query: gql`
-      query ListServerTokens($filter: String) {
-        serversCollection(filter: { id: { eq: $filter } }) {
-          edges {
-            node {
-              server_tokensCollection {
-                edges {
-                  node {
-                    server_id
-                    token_id
-                    servers {
-                      id
-                      name
-                    }
-                    tokens {
-                      id
-                      metadata
-                    }
-                  }
-                }
-              }
+      query ListServerTokens($serverId: BigInt!) {
+        allServerTokens(condition: { serverId: $serverId }) {
+          nodes {
+            nodeId
+            tokenByTokenId {
+              nodeId
+              id
+              metadata
             }
           }
         }
       }
     `,
     variables: {
-      filter: serverId,
+      serverId,
     },
   });
-  const result =
-    data.serversCollection.edges[0].node.server_tokensCollection.edges.map(
-      ({ node }) => {
-        return {
-          id: node.tokens.id,
-          metadata: JSON.parse(node.tokens.metadata),
-        };
-      }
-    );
 
-  return result;
+  console.error({ token: data.tokenByTokenId });
+
+  return data.allServerTokens.nodes.map(
+    ({ tokenByTokenId: { id, metadata } }) => ({
+      id,
+      metadata,
+    })
+  );
 };
