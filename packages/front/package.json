@@ -7,6 +7,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "engines": {
+    "yarn": ">=1.22.0 <2.0.0",
+    "node": ">=17.5.0"
+  },
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@headlessui/react": "^1.6.6",
@@ -16,6 +20,7 @@
     "@near-wallet-selector/sender": "^5.0.3",
     "@near/contracts": "*",
     "autoprefixer": "^10.4.7",
+    "bn.js": "^5.2.1",
     "buffer": "^6.0.3",
     "near-api-js": "^0.44.2",
     "postcss": "^8.4.13",

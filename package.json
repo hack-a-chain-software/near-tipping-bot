@@ -8,6 +8,10 @@
     "front": "yarn workspace @near/front",
     "contracts": "yarn workspace @near/contracts"
   },
+  "engines": {
+    "yarn": ">=1.22.0 <2.0.0",
+    "node": ">=17.5.0"
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "yarn prettier --config .prettierrc --write"
@@ -51,5 +55,8 @@
     "lint-staged": "^12.4.1",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2"
+  },
+  "dependencies": {
+    "react-router-hash-link": "^2.4.3"
   }
 }

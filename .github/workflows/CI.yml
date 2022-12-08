@@ -7,22 +7,75 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  cypress-run:
+  check_build_and_tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+          cache: 'yarn'
+
+      - name: Install Rust
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source $HOME/.cargo/env
+          rustup component add rustfmt
+          rustup target add wasm32-unknown-unknown
 
       - name: Install Yarn Globally
         run: npm install -g yarn
 
-      - name: Cypress run
+      - name: Installing Dependencies
+        run: yarn
+
+      - name: Rust Tests
+        run: yarn contracts test:rust
+
+      - name: Lib Tests
+        run: yarn contracts test:lib
+
+  cypress-install:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node18.12.0-chrome103-ff107
+      options: --user 1001 # READ: https://github.com/cypress-io/github-action/issues/446
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+          cache: 'yarn'
+
+      - name: Output Yarn cache directory
+        id: yarn-cache-dir
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Yarn install
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cypress install
         uses: cypress-io/github-action@v4
         with:
-          record: false
           browser: chrome
+          runTests: false
           install-command: yarn
           build: yarn front build
-          start: yarn front dev
 
-
+      - name: Save build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: ./packages/front/dist
+          if-no-files-found: error

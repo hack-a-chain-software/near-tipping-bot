@@ -6,6 +6,9 @@ import ReactDOM from "react-dom/client";
 import { WalletSelectorContextProvider } from "@/utils/context/wallet";
 import { WalletSelectorModal } from "@/components/modals/wallet";
 
+
+
+
 // TODO: Find a better way to handle this buffer error
 window.Buffer = window.Buffer || Buffer;
 
