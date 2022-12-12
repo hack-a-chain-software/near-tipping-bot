@@ -1,13 +1,16 @@
 export const ButtonSendToken = () => {
   return (
     <button
-      className="flex items-center text-white rounded-full  mx-auto px-5  py-3 text-xl  justify-between
-          bg-bgbutton lg:mx-0 lg:mr-auto lg:my-4 align-middle"
+      className="flex items-center text-white rounded-full  mx-auto px-5  py-3 text-xl  justify-between bg-bgbutton lg:mx-0 lg:mr-auto lg:my-4 align-middle"
+      onClick={() =>
+        window.open(
+          "https://discord.com/api/oauth2/authorize?client_id=1051851105300123668&permissions=8&scope=bot"
+        )
+      }
       type="button"
     >
-      <a className=" font-medium px-1" href="https://google.com">
-        Get on your server{" "}
-      </a>
+      <span className=" font-medium px-1">Get on your server </span>
+
       <svg
         className="lg:pt-1"
         width="30"
