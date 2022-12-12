@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "yarn husky install",
     "front": "yarn workspace @near/front",
+    "bot": "yarn workspace @near/bot",
     "contracts": "yarn workspace @near/contracts"
   },
   "engines": {
