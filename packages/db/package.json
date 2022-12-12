@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "gm": "DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@localhost/ntb SHADOW_DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@localhost/ntb_shadow ROOT_DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@localhost/postgres graphile-migrate",
+    "gm": "graphile-migrate",
     "commit": "yarn run gm commit",
     "uncommit": "yarn run gm uncommit",
     "seed": "yarn run gm run src/seeds.sql",
