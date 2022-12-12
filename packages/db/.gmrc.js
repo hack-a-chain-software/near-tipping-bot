@@ -1,25 +1,84 @@
-/*
- * Graphile Migrate configuration.
- *
- * If you decide to commit this file (recommended) please ensure that it does
- * not contain any secrets (passwords, etc) - we recommend you manage these
- * with environmental variables instead.
- *
- * This file is in JSON5 format, in VSCode you can use "JSON with comments" as
- * the file format.
- */
-{
-  /*
-   * Database connections strings are sourced from the DATABASE_URL,
-   * SHADOW_DATABASE_URL and ROOT_DATABASE_URL environmental variables.
-   */
+require("dotenv").config();
+
+const LOCAL_ENV = {
+  base: {
+    user: "ntb",
+    password: process.env.NTB_PASSWORD || "abacaba",
+    host: "localhost",
+    port: 5432,
+    database: "ntb",
+    tls: false,
+  },
+  shadow: {
+    database: "ntb_shadow",
+  },
+  root: {
+    user: "postgres",
+    database: "postgres",
+    password: process.env.POSTGRES_PASSWORD || "abacaba",
+  },
+};
+
+// TODO: decide what to hard-code and what to use env vars for.
+// I used the current production values as defaults for host & port and hard-coded the rest, except for secrets.
+const PROD_ENV = {
+  user: "ntb",
+  password: process.env.NTB_PASSWORD,
+  host:
+    process.env.HOST || "ntb-prod-do-user-13083855-0.b.db.ondigitalocean.com",
+  port: process.env.PORT || 25060,
+  database: "ntb",
+  tls: true,
+  cert: "tls/do-ca.crt",
+};
+
+const buildQueryString = ({ tls, cert }) =>
+  tls ? `?sslmode=verify-full&sslrootcert=${cert}` : "?sslmode=allow";
+
+const buildConnectionString = ({
+  user,
+  password,
+  host,
+  port = 5432,
+  database,
+  tls,
+  cert,
+}) =>
+  `postgresql://${user}:${password}@${host}:${port}/${database}${buildQueryString(
+    { tls, cert }
+  )}`;
+const buildShadowConnectionString = ({ base, shadow }) =>
+  buildConnectionString({ ...base, ...shadow });
+const buildRootConnectionString = ({ base, root }) =>
+  buildConnectionString({ ...base, ...root });
+
+function buildEnvironmentConfiguration() {
+  // TODO: we'll probably need different environments for local and remove development, so maybe NODE_ENV isn't ideal.
+  switch (process.env.NODE_ENV) {
+    case "development":
+      return {
+        connectionString: buildConnectionString(LOCAL_ENV.base),
+        shadowConnectionString: buildShadowConnectionString(LOCAL_ENV),
+        rootConnectionString: buildRootConnectionString(LOCAL_ENV),
+      };
+    case "production":
+      return {
+        connectionString: buildConnectionString(PROD_ENV),
+      };
+    default:
+      throw new Error("Unrecognized environment");
+  }
+}
+
+module.exports = {
+  ...buildEnvironmentConfiguration(),
 
   /*
    * pgSettings: key-value settings to be automatically loaded into PostgreSQL
    * before running migrations, using an equivalent of `SET LOCAL <key> TO
    * <value>`
    */
-  "pgSettings": {
+  pgSettings: {
     // "search_path": "app_public,app_private,app_hidden,public",
   },
 
@@ -40,10 +99,9 @@
    * `:DATABASE_OWNER` placeholders, and you should not attempt to override
    * these.
    */
-  "placeholders": {
+  placeholders: {
     // ":DATABASE_VISITOR": "!ENV", // Uses process.env.DATABASE_VISITOR
   },
-
   /*
    * Actions allow you to run scripts or commands at certain points in the
    * migration lifecycle. SQL files are ran against the database directly.
@@ -59,61 +117,53 @@
    * and normal databases. If "shadow" is true the action will only run on
    * actions to the shadow DB, and if false only on actions to the main DB.
    */
-
   /*
    * afterReset: actions executed after a `graphile-migrate reset` command.
    */
-  "afterReset": [
+  afterReset: [
     // "afterReset.sql",
     // { "_": "command", "command": "graphile-worker --schema-only" },
   ],
- 
   /*
    * afterAllMigrations: actions executed once all migrations are complete.
    */
-  "afterAllMigrations": [
+  afterAllMigrations: [
     // {
     //   "_": "command",
     //   "shadow": true,
     //   "command": "if [ \"$IN_TESTS\" != \"1\" ]; then ./scripts/dump-db; fi",
     // },
   ],
-
   /*
    * afterCurrent: actions executed once the current migration has been
    * evaluated (i.e. in watch mode).
    */
-  "afterCurrent": [
+  afterCurrent: [
     // {
     //   "_": "command",
     //   "shadow": true,
     //   "command": "if [ \"$IN_TESTS\" = \"1\" ]; then ./scripts/test-seed; fi",
     // },
   ],
-
   /*
    * blankMigrationContent: content to be written to the current migration
    * after commit. NOTE: this should only contain comments.
    */
   // "blankMigrationContent": "-- Write your migration here\n",
-
   /****************************************************************************\
   ***                                                                        ***
   ***         You probably don't want to edit anything below here.           ***
   ***                                                                        ***
   \****************************************************************************/
-
   /*
    * manageGraphileMigrateSchema: if you set this false, you must be sure to
    * keep the graphile_migrate schema up to date yourself. We recommend you
    * leave it at its default.
    */
   // "manageGraphileMigrateSchema": true,
-
   /*
    * migrationsFolder: path to the folder in which to store your migrations.
    */
   // migrationsFolder: "./migrations",
-
-  "//generatedWith": "1.4.0"
-}
+  "//generatedWith": "1.4.0",
+};
