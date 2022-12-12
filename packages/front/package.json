@@ -18,7 +18,6 @@
     "@near-wallet-selector/core": "^5.0.3",
     "@near-wallet-selector/near-wallet": "^5.0.3",
     "@near-wallet-selector/sender": "^5.0.3",
-    "@near/contracts": "*",
     "autoprefixer": "^10.4.7",
     "bn.js": "^5.2.1",
     "buffer": "^6.0.3",
