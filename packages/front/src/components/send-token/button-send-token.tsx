@@ -4,7 +4,7 @@ export const ButtonSendToken = () => {
       className="flex items-center text-white rounded-full  mx-auto px-5  py-3 text-xl  justify-between bg-bgbutton lg:mx-0 lg:mr-auto lg:my-4 align-middle"
       onClick={() =>
         window.open(
-          "https://discord.com/api/oauth2/authorize?client_id=1051851105300123668&permissions=8&scope=bot"
+          "https://discord.com/api/oauth2/authorize?client_id=1051851105300123668&permissions=2147503104&scope=bot"
         )
       }
       type="button"
