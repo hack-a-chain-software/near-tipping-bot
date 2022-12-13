@@ -18,7 +18,7 @@ function setupGraphqlServer() {
     enhanceGraphiql: true,
     dynamicJson: true,
     simpleCollections: "omit",
-    handleErrors: (errors) => console.error(errors),
+    handleErrors: console.error,
   });
 
   return http
