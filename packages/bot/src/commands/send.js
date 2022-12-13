@@ -78,8 +78,7 @@ module.exports = {
     }
 
     await interaction.reply({
-      // TODO: check if /transactions/? or /transactions?
-      content: `Click the link to transfer: https://peterthebot.com/transactions/?token=${token.metadata.name}&amount=${amount}&receiver=${wallet}&burner=${burnWallet}`,
+      content: `Click the link to transfer: https://peterthebot.com/transaction?token=${token.id}&amount=${amount}&receiver=${wallet}&burner=${burnWallet}`,
       ephemeral: true,
     });
   },
