@@ -18,7 +18,7 @@ function setupGraphqlServer() {
     enhanceGraphiql: true,
     dynamicJson: true,
     simpleCollections: "omit",
-    showErrorStack: envConfig(false, "json"),
+    handleErrors: console.error,
   });
 
   return http
