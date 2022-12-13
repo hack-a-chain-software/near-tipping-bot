@@ -32,8 +32,8 @@ export const HowToUse = () => {
             <p className="font-medium text-base text-center">
               {" "}
               An administrator use the command{" "}
-              <span className="text-pink">/Create new server</span> to register
-              the server within the bot.
+              <span className="text-pink">/verifyserver</span> to register the
+              server within the bot.
             </p>
           </div>
         </div>
@@ -48,8 +48,8 @@ export const HowToUse = () => {
             </div>
 
             <p className="font-medium text-base">
-              Use the <span className="text-pink">/enable token</span> command
-              to choose which tokens to make available on your server.
+              Use the <span className="text-pink">/addtoken</span> command to
+              choose which tokens to make available on your server.
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ export const HowToUse = () => {
             </div>
 
             <p className="font-medium text-base">
-              Use the <span className="text-pink">/set wallet</span> command to
+              Use the <span className="text-pink">/setwallet</span> command to
               add the address of the wallet you want to receive tokens.
             </p>
           </div>
