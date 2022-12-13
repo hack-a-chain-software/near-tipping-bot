@@ -23,7 +23,7 @@ export const Transaction = () => {
       await initNear();
 
       if (transactionHashes === null) {
-        if (token === "$NEAR") {
+        if (token === "near") {
           await sendMoneyCall(receiver, amount);
         } else {
           initializeTokenContract(token, receiver, amount);
