@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "jsx": "preserve",
     "downlevelIteration": true,
-    
     /* noEmit - Snowpack builds (emits) files, not tsc. */
     "noEmit": true,
     /* Additional Options */
