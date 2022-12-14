@@ -7,7 +7,9 @@ const findServerNotRegistered = require("../utils/findServerNotRegisteredError")
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("addtoken")
-    .setDescription("Insert token into server to perform a transfer")
+    .setDescription(
+      "Add a token into the server to make it available for transfers"
+    )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addStringOption((options) =>
       options
