@@ -29,7 +29,7 @@ export const RegisterToken = () => {
           <p className="text-center pb-12 font-normal text-xl">
             Make a request to add a new token{" "}
             <br className="hidden lg:block"></br>
-            through google forms by clicking the button below
+            by using <span className="text-pink">/newtoken</span> command
           </p>
 
           <ButtonRegisterToken />
