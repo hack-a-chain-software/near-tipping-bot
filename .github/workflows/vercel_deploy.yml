@@ -30,8 +30,8 @@ jobs:
       - name: Installing Dependencies
         run: yarn
 
-      # - name: Set Testnet environment variables
-      #   run: yarn run setup:testnet:env
+      - name: Set Testnet environment variables
+        run: yarn run setup:testnet:env
       
       - name: Pull vercel setup
         run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}

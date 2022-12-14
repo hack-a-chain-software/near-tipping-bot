@@ -7,7 +7,8 @@
     "postinstall": "yarn husky install",
     "front": "yarn workspace @near/front",
     "bot": "yarn workspace @near/bot",
-    "contracts": "yarn workspace @near/contracts"
+    "contracts": "yarn workspace @near/contracts",
+    "setup:testnet:env": "node .github/utilities/testnet_environments.js"
   },
   "engines": {
     "yarn": ">=1.22.0 <2.0.0",
