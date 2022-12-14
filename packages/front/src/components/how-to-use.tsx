@@ -32,7 +32,7 @@ export const HowToUse = () => {
             <p className="font-medium text-base text-center">
               {" "}
               An administrator use the command{" "}
-              <span className="text-pink">/verifyserver</span> to register the
+              <span className="text-pink">/register</span> to register the
               server within the bot.
             </p>
           </div>
