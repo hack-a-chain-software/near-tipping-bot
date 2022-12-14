@@ -2,7 +2,8 @@ name: Vercel Deploy
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  VITE_GRAPHQL_API_URI: https://jacksondev.xyz/
+  VITE_CONTRACT: dev-1652055476064-95220052886384
+  VITE_NEAR_NETWORK: testnet
 on:
   push:
     branches:
@@ -30,8 +31,8 @@ jobs:
       - name: Installing Dependencies
         run: yarn
 
-      - name: Set Testnet environment variables
-        run: yarn run setup:testnet:env
+      # - name: Set Testnet environment variables
+      #   run: yarn run setup:testnet:env
       
       - name: Pull vercel setup
         run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
