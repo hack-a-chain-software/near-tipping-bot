@@ -14,7 +14,7 @@ module.exports = {
 
     const userWallet = await findUserWallet(id, serverId);
 
-    if (!userWallet) {
+    if (!userWallet.wallet) {
       await interaction.reply({
         content:
           "There is no wallet registred. Please use /setwallet to save your wallet",
@@ -24,7 +24,7 @@ module.exports = {
     }
 
     await interaction.reply({
-      content: `Hey you ${username}, your wallet is ${userWallet.node.wallet}`,
+      content: `Hey you ${username}, your wallet is ${userWallet.wallet}`,
       ephemeral: true,
     });
   },
