@@ -37,7 +37,7 @@ module.exports = async (serverId, receiverId, tokenId) => {
   });
 
   return {
-    token: data.serverToken.tokenByTokenId,
-    wallet: data.wallet.wallet,
+    token: data?.serverToken?.tokenByTokenId,
+    wallet: data?.wallet?.wallet,
   };
 };
