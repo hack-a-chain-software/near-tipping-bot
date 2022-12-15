@@ -24,9 +24,16 @@ module.exports = {
 
     const tokens = await listTokens();
 
-    const filtered = tokens.filter(({ metadata }) =>
-      metadata.name.startsWith(focusedValue)
-    );
+    const filtered = tokens.filter(({ metadata }) => {
+      const { name = "", symbol = "" } = metadata || {};
+
+      const focusedLowerCase = focusedValue.toLowerCase();
+
+      return (
+        name.toLowerCase().includes(focusedLowerCase) ||
+        symbol.toLowerCase().includes(focusedLowerCase)
+      );
+    });
 
     await interaction.respond(
       filtered.map((token) => ({ name: token.metadata.name, value: token.id }))

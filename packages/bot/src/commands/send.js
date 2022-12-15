@@ -33,9 +33,16 @@ module.exports = {
 
     const focusedValue = interaction.options.getFocused();
 
-    const filtered = tokens.filter((choice) =>
-      choice.metadata.name.startsWith(focusedValue)
-    );
+    const filtered = tokens.filter((choice) => {
+      const { name = "", symbol = "" } = choice?.metadata || {};
+
+      const focusedLowerCase = focusedValue.toLowerCase();
+
+      return (
+        name.toLowerCase().includes(focusedLowerCase) ||
+        symbol.toLowerCase().includes(focusedLowerCase)
+      );
+    });
 
     await interaction.respond(
       filtered.map((token) => ({ name: token.metadata.name, value: token.id }))
