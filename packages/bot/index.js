@@ -3,6 +3,7 @@ require("dotenv").config();
 const http = require("http");
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const { postgraphile } = require("postgraphile");
+const { PgMutationUpsertPlugin } = require("postgraphile-upsert-plugin");
 
 const { initializeHandlers } = require("./src/handlers");
 
@@ -18,6 +19,7 @@ function setupGraphqlServer() {
     enhanceGraphiql: true,
     dynamicJson: true,
     simpleCollections: "omit",
+    appendPlugins: [PgMutationUpsertPlugin],
     handleErrors: (errors) => console.error(errors),
   });
 
