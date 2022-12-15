@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
 const getSendParameters = require("../graphql/queries/getSendParameters");
 const listServerTokens = require("../graphql/queries/listServerTokens");
+const findUserWallet = require("../graphql/queries/findUserWallet");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -59,11 +60,19 @@ module.exports = {
     const amount = interaction.options.getString("amount");
     const receiver = interaction.options.getUser("receiver");
 
-    const {
-      token,
-      wallet,
-      // TODO: make it work without autocomplete (fetch by token name if necessary)
-    } = await getSendParameters(serverId, receiver.id, tokenId);
+    const receiverWallet = await findUserWallet(receiver.id, serverId);
+
+    console.log("Receiver wallet:" + receiverWallet);
+
+    console.log("antes");
+
+    const { token, wallet } = await getSendParameters(
+      serverId,
+      receiver.id,
+      tokenId
+    );
+
+    console.log("depois" + wallet);
 
     if (!token) {
       await interaction.reply({
