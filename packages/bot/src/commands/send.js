@@ -13,7 +13,7 @@ module.exports = {
         .setAutocomplete(true)
         .setRequired(true)
     )
-    .addNumberOption((option) =>
+    .addStringOption((option) =>
       option
         .setName("amount")
         .setDescription("The amount of Tokens to be sent")
@@ -49,7 +49,7 @@ module.exports = {
     const serverId = interaction.member.guild.id;
 
     const tokenId = interaction.options.getString("token");
-    const amount = interaction.options.getNumber("amount");
+    const amount = interaction.options.getString("amount");
     const receiver = interaction.options.getUser("receiver");
 
     const {
@@ -78,7 +78,12 @@ module.exports = {
     }
 
     await interaction.reply({
-      content: `Click the link to transfer: https://peterthebot.com/transaction?token=${token.id}&amount=${amount}&receiver=${wallet}&burner=${burnWallet}`,
+      content: `Click the link to transfer: https://peterthebot.com/transaction?token=${
+        token.id
+      }&amount=${amount.replace(
+        /,/g,
+        "."
+      )}&receiver=${wallet}&burner=${burnWallet}`,
       ephemeral: true,
     });
   },
