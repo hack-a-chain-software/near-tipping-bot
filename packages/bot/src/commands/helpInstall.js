@@ -1,11 +1,15 @@
 const isEmpty = require("lodash/isEmpty");
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const listServerTokens = require("../graphql/queries/listServerTokens");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("helpinstall")
-    .setDescription("List all server tokens"),
+    .setDescription("How to configure the bot.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   async execute(interaction) {
     const embed = new EmbedBuilder().setTitle("Welcome").setColor("Random")
