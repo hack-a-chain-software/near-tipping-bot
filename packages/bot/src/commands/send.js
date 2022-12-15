@@ -62,17 +62,11 @@ module.exports = {
 
     const receiverWallet = await findUserWallet(receiver.id, serverId);
 
-    console.log("Receiver wallet:" + receiverWallet);
-
-    console.log("antes");
-
     const { token, wallet } = await getSendParameters(
       serverId,
       receiver.id,
       tokenId
     );
-
-    console.log("depois" + wallet);
 
     if (!token) {
       await interaction.reply({
