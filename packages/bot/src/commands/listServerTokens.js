@@ -1,3 +1,4 @@
+const isEmpty = require("lodash/isEmpty");
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const listServerTokens = require("../graphql/queries/listServerTokens");
 
@@ -18,6 +19,12 @@ module.exports = {
     tokens.forEach((token) =>
       embed.addFields({ name: token.metadata.name, value: token.id })
     );
+
+    if (isEmpty(tokens)) {
+      embed.setDescription(
+        "Your server has no tokens. Please use /addtoken to add new token"
+      );
+    }
 
     await interaction.reply({ embeds: [embed], ephemeral: true });
   },
