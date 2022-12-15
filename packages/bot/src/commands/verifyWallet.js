@@ -4,7 +4,9 @@ const findUserWallet = require("../graphql/queries/findUserWallet");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("verifywallet")
-    .setDescription("Check the wallet that is saved"),
+    .setDescription(
+      "Check which wallet is connected to your discord account on this server"
+    ),
 
   async execute(interaction) {
     const { username, id } = interaction.user;
