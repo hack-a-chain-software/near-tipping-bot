@@ -36,12 +36,16 @@ insert into help (command, message) values
         'This command is used to set your wallet in our bot so that you can receive transfers. To use just select the command and send.'
     ),
     (
-        'verifyserver',
-        'This command serves to verify that your server is already registered in our bot. To use simply select the command, send it and then a message will be displayed whether or not it is registered.'
-    ),
-    (
         'verifywallet',
         'This command serves to verify that you already have a registered wallet in the bot. To use simply select the command, send it and then a message will be displayed whether or not you have a registered wallet.'
+    ),
+    (
+        'tutorial',
+        'This command serves to instruct how to use the bot to send tips.'
+    ),
+    (
+        'helpinstall',
+        'This command serves to instruct how to configure the bot on your server.'
     )
 ;
 
