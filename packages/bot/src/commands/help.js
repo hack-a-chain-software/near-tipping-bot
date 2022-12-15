@@ -20,7 +20,7 @@ module.exports = {
     const helpCommands = await listHelps();
 
     const filtered = helpCommands.filter(({ command }) =>
-      command.startsWith(focusedValue)
+      command.toLowerCase().includes(focusedValue.toLowerCase())
     );
 
     await interaction.respond(
