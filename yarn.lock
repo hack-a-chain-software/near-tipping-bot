@@ -4290,6 +4290,11 @@ postgraphile-core@4.12.3:
     graphile-build-pg "4.12.3"
     tslib "^2.0.1"
 
+postgraphile-upsert-plugin@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/postgraphile-upsert-plugin/-/postgraphile-upsert-plugin-3.2.0.tgz#c7d3e53d0d7ac1875fed7d24816df65269b7890b"
+  integrity sha512-Dd9lee0sg9refsiJ+SSwD1esiey6J9MMl7yhToucyej1ju00vcIw5m5eSgO41351vfljP1R5Y1FEmOz/6Vy1FA==
+
 postgraphile@^4.12.12:
   version "4.12.12"
   resolved "https://registry.yarnpkg.com/postgraphile/-/postgraphile-4.12.12.tgz#c62c2ca3cbc0d4d3ec90bad87ca4003eb3a992f4"

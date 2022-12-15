@@ -4,12 +4,12 @@ const { graphQlClient } = require("../../lib/graphQlClient");
 module.exports = async (userId, serverId, wallet) => {
   const { data } = await graphQlClient.mutate({
     mutation: gql`
-      mutation insertWallet(
+      mutation upsertWallet(
         $userId: BigInt!
         $serverId: BigInt!
         $wallet: String!
       ) {
-        createWallet(
+        upsertWallet(
           input: {
             wallet: { userId: $userId, serverId: $serverId, wallet: $wallet }
           }
@@ -30,5 +30,5 @@ module.exports = async (userId, serverId, wallet) => {
     },
   });
 
-  return data.createWallet.wallet;
+  return data?.wallet?.wallet;
 };
