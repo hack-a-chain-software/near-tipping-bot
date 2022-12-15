@@ -33,7 +33,7 @@ const PROD_ENV = {
 };
 
 const buildQueryString = ({ tls, cert }) =>
-  tls ? `?sslmode=verify-full&sslrootcert=${cert}` : "?sslmode=allow";
+  tls ? `?sslmode=verify-full&sslrootcert=${cert}` : "?sslmode=disable";
 
 const buildConnectionString = ({
   user,
