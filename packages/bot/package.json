@@ -12,6 +12,7 @@
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
     "node-fetch": "2",

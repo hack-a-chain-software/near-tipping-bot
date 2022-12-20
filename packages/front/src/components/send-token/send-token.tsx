@@ -22,7 +22,7 @@ export const SendToken = () => {
         ></img>
         <p className="font-medium text-xl text-justify px-5 pb-8">
           Engage your community with ranking, social score, and token
-          submissions with no fees, without opening your wallet.
+          submissions with no fees.
         </p>
         <ButtonSendToken></ButtonSendToken>
       </div>
