@@ -5,11 +5,11 @@ const listHelps = require("../graphql/queries/listHelps");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Choice one command to see a tutorial")
+    .setDescription("Choose a command to see its tutorial")
     .addStringOption((option) =>
       option
         .setName("command")
-        .setDescription("Choose the command you want to know how to use")
+        .setDescription("Choose the command you would like to see the tutorial")
         .setRequired(true)
         .setAutocomplete(true)
     ),
