@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const fs = require("fs");
 const http = require("http");
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const { postgraphile } = require("postgraphile");
@@ -13,15 +13,29 @@ function envConfig(prod, dev) {
 }
 
 function setupGraphqlServer() {
-  const postgraphileHandler = postgraphile(process.env.DATABASE_URL, "public", {
-    watchPg: true,
-    graphiql: true,
-    enhanceGraphiql: true,
-    dynamicJson: true,
-    simpleCollections: "omit",
-    appendPlugins: [PgMutationUpsertPlugin],
-    handleErrors: (errors) => console.error(errors),
-  });
+  const postgraphileHandler = postgraphile(
+    {
+      database: process.env.DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+      password: process.env.DB_PASSWORD,
+      user: process.env.DB_USERNAME,
+      sslmode: "require",
+      ssl: {
+        ca: fs.readFileSync("./tls/do-ca.crt"),
+      },
+    },
+    "public",
+    {
+      watchPg: true,
+      graphiql: true,
+      enhanceGraphiql: true,
+      dynamicJson: true,
+      simpleCollections: "omit",
+      appendPlugins: [PgMutationUpsertPlugin],
+      handleErrors: (errors) => console.error(errors),
+    }
+  );
 
   return http
     .createServer(postgraphileHandler)
