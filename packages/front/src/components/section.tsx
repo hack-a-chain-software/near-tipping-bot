@@ -1,11 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { propsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 export const Section = ({
   id,
   children,
   className = "",
-}: propsWithChildren & { id: string; className?: string }) => (
+}: PropsWithChildren & { id: string; className?: string }) => (
   <section
     id={id}
     children={children}

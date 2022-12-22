@@ -1,12 +1,10 @@
 import {
-  RegisterToken,
   Footer,
   NavBar,
   Section,
   Button,
   Title,
   Text,
-  Space,
   DiscordIcon,
   TutorialCard,
   HighlightText,
