@@ -99,36 +99,23 @@ const tokens = [
 
 export const AvaiableTokens = () => {
   return (
-    <section
-      id="available_tokens"
-      className="items-center text-center px-8 text-white py-32 relative"
-    >
-      <LeftWhiteStar></LeftWhiteStar>
-      <RightWhiteStar></RightWhiteStar>
-      <AvaiableTokensAsset></AvaiableTokensAsset>
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,230px))] gap-7 justify-center">
+      {tokens.map(({ name, image, symbol }) => (
+        <div
+          key={`avaialble-token-` + name}
+          className="bg-grey-100/[0.5] shadow-primary rounded-lg flex pl-7 py-5 items-center"
+        >
+          <img
+            loading="lazy"
+            src={image}
+            alt={name}
+            className="w-[50px] rounded-full"
+          />
 
-      <h2 className=" font-extrabold text-fS32px text-center pt-12 pb-22">
-        Our <span className="text-purple my-4"> available tokens</span>
-      </h2>
-
-      <div className="my-24 lg:mx-44 flex flex-col justify-center md:justify-between grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 lg:gap-x-0 gap-5 gap-y-5">
-        {tokens.map(({ name, image, symbol }) => (
-          <div
-            key={`avaialble-token-` + name}
-            className="bg-black bg-opacity-60 shadow-how_to_use_shadow rounded-lg flex inline-flex items-center justify-center lg:w-10/12  p-4 z-50"
-          >
-            <img
-              loading="lazy"
-              src={image}
-              alt={name}
-              className="h-[42px] rounded-full"
-            />
-            <p className="font-medium text-3xl px-4">{symbol}</p>
-          </div>
-        ))}
-      </div>
-      {/*<ButtonavAilableTokens></ButtonavAilableTokens>*/}
-    </section>
+          <p className="font-medium text-3xl px-4 text-white">{symbol}</p>
+        </div>
+      ))}
+    </div>
   );
 };
 

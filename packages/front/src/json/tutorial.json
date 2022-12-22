@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Register Server",
+    "description": "An administrator use the command /register to register the server within the bot."
+  },
+  {
+    "title": "Enable Tokens",
+    "description": "Use the /addtoken command to choose which tokens to make available on your server."
+  },
+  {
+    "title": "Set Tokens",
+    "description": "Use the /setwallet command to add the address of the wallet you want to receive tokens."
+  },
+  {
+    "title": "Send Tokens",
+    "description": "Use the /send command to send tokens to anyone on your server."
+  }
+]

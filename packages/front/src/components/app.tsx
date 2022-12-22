@@ -1,5 +1,6 @@
 import routes from "~react-pages";
 import { Header } from "@/components/header";
+import Space from "./space";
 import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 const Pages = () => {
@@ -8,7 +9,7 @@ const Pages = () => {
 
 export const App = () => (
   <Router>
-    {/* <Header /> */}
+    <Space />
     <Pages />
   </Router>
 );
