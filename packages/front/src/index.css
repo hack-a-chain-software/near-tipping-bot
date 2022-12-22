@@ -6,12 +6,21 @@ body {
   width: 100vw;
   height: 100vh;
   font-family: 'Inter', sans-serif;
-  background-color: #3D3D3D;
+  background-color: #040d21;
 }
 
 body .ntb-space__stars {
   will-change: opacity, transform;
 }
+
+.ntb-space {
+  background-size: 400% 250%, 100% 100%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat, repeat;
+  background-image: url('/assets/hero-glow.svg'),
+    url('/images/bg-secondary.png');
+}
+
 @keyframes zoom {
   0% {
     opacity: 0.2;
