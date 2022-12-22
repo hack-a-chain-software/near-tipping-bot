@@ -88,13 +88,13 @@ function Index() {
 
       <Divider>
         <Section id="register-token" className="pt-32 pb-60">
-          <div className="text-center mb-16">
+          <div className="text-center">
             <Title>
               Didn’t find the <HighlightText>token you need?</HighlightText>
             </Title>
           </div>
 
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center ml-[-211px]">
             <img
               loading="lazy"
               src="/images/tipping_bot.png"
