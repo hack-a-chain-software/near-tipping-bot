@@ -9,14 +9,9 @@ body {
   background-color: #3D3D3D;
 }
 
-body > .ntb-space__stars {
-  will-change: opacity;
+body .ntb-space__stars {
+  will-change: opacity, transform;
 }
-
-body > .ntb-space__stars {
-  will-change: transform;
-}
-
 @keyframes zoom {
   0% {
     opacity: 0.2;
