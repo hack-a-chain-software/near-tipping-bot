@@ -17,7 +17,7 @@ const navbarItems = [
 
 export const NavBar = () => {
   return (
-    <nav className="bg-grey-100">
+    <nav className="bg-blue-0">
       <div
         className="
           mx-auto

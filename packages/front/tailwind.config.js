@@ -12,8 +12,8 @@ module.exports = {
         // grey: '#3D3D3D',
         lilac: "#DEDFFF",
 
-        bg: {
-          primary: "#3D3D3D",
+        blue: {
+          0: "#040d21",
         },
         grey: {
           100: "#333333",
