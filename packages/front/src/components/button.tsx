@@ -1,11 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { propsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 export const Button = ({
   children,
   onClick,
   className = "",
-}: propsWithChildren & { onClick: () => any; className?: string }) => (
+}: PropsWithChildren & { onClick: () => any; className?: string }) => (
   <button
     children={children}
     onClick={() => onClick()}

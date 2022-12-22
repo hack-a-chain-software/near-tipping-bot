@@ -1,10 +1,3 @@
-import {
-  AvaiableTokensAsset,
-  LeftWhiteStar,
-  RightWhiteStar,
-} from "../assets/available-tokens";
-import { ButtonavAilableTokens } from "./button";
-
 const tokens = [
   {
     name: "Near",

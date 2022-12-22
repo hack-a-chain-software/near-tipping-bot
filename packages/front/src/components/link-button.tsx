@@ -1,10 +1,10 @@
-import { propsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { HashLink } from "react-router-hash-link";
 
 export const LinkButton = ({
   to,
   children,
-}: propsWithChildren & { to: string }) => (
+}: PropsWithChildren & { to: string }) => (
   <HashLink
     to={to}
     children={children}
