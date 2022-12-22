@@ -12,3 +12,4 @@ export * from "./title";
 export * from "./text";
 export * from "./tutorial-card";
 export * from "./space";
+export * from "./divider";
