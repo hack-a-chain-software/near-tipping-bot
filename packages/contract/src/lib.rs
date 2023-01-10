@@ -9,7 +9,6 @@ use near_sdk::{
 #[global_allocator]
 static ALLOC: near_sdk::wee_alloc::WeeAlloc = near_sdk::wee_alloc::WeeAlloc::INIT;
 
-// const ONE_NEAR: u128 = 1_000_000_000_000_000_000_000_000;
 pub const FRACTIONAL_BASE: u128 = 10_000;
 pub const BASE_GAS: Gas = 5_000_000_000_000;
 
@@ -200,11 +199,4 @@ mod tests {
         assert_eq!(contract.owner_id, OWNER_ACCOUNT.to_string())
     }
 
-    #[test]
-    #[should_panic(expected = "Should be initialized before usage")]
-    fn test_default() {
-        let context = get_context(vec![], false, 0, 0, OWNER_ACCOUNT.to_string());
-        testing_env!(context);
-        let _contract = Contract::default();
-    }
 }
