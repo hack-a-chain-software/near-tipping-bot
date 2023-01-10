@@ -1,9 +1,13 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 pub use near_sdk::serde_json::{self, json, Value};
 use near_sdk::{
-    serde::{Serialize, Deserialize},
-    env, ext_contract, json_types::U128, log, near_bindgen, AccountId,
-    Gas, Promise, PromiseResult, borsh, PanicOnDefault, 
+    borsh,
+    collections::LookupMap,
+    env, ext_contract,
+    json_types::U128,
+    log, near_bindgen,
+    serde::{Deserialize, Serialize},
+    AccountId, BorshStorageKey, Gas, PanicOnDefault, Promise, PromiseResult,
 };
 
 #[global_allocator]
@@ -39,10 +43,49 @@ pub struct FtTransferCallMsg {
     server_discord: String,
 }
 
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct ServerCoinUser {
+    server: String,
+    coin: String,
+    user: String,
+}
+
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct ServerCoin {
+    server: String,
+    coin: String,
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[serde(crate = "near_sdk::serde")]
+pub struct RankingItem {
+    user: String,
+    amount: U128,
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize)]
+#[serde(crate = "near_sdk::serde")]
+pub struct LastTransactionsItem {
+    sender: String,
+    receiver: String,
+    coin: String,
+    amount: U128,
+}
+
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct Contract {
     pub owner_id: AccountId,
+    pub user_history: LookupMap<ServerCoinUser, u128>,
+    pub server_ranking: LookupMap<ServerCoin, Vec<RankingItem>>,
+    pub server_last_tips: LookupMap<String, Vec<LastTransactionsItem>>,
+}
+
+#[derive(BorshDeserialize, BorshSerialize, BorshStorageKey)]
+pub enum StorageKey {
+    UserHistory,
+    ServerRanking,
+    ServerLastTips,
 }
 
 #[near_bindgen]
@@ -55,7 +98,12 @@ impl Contract {
         );
         assert!(!env::state_exists(), "Already initialized");
 
-        Self { owner_id: owner_id }
+        Self {
+            owner_id,
+            user_history: LookupMap::new(StorageKey::UserHistory),
+            server_ranking: LookupMap::new(StorageKey::ServerRanking),
+            server_last_tips: LookupMap::new(StorageKey::ServerLastTips),
+        }
     }
 
     #[payable]
@@ -86,7 +134,8 @@ impl Contract {
     }
 
     pub fn ft_on_transfer(&mut self, sender_id: String, amount: U128, msg: String) -> String {
-        let parsed_message: FtTransferCallMsg = serde_json::from_str(&msg).expect("msg in wrong format");
+        let parsed_message: FtTransferCallMsg =
+            serde_json::from_str(&msg).expect("msg in wrong format");
 
         token_contract::ft_transfer(
             parsed_message.receiver.clone(),
@@ -144,9 +193,130 @@ impl Contract {
                     })
                     .to_string()
                 );
+                self.update_analytics_records(
+                    sender_discord,
+                    receiver_discord,
+                    server_discord,
+                    token,
+                    amount.0,
+                )
             }
             PromiseResult::Failed => env::panic(b"ERR_CALL_FAILED"),
         }
+    }
+
+    pub fn view_history(&self, user: String, server: String, coin: String) -> U128 {
+        U128(
+            self.user_history
+                .get(&ServerCoinUser { server, coin, user })
+                .unwrap_or(0),
+        )
+    }
+
+    pub fn view_last_server_tips(&self, server: String) -> Vec<LastTransactionsItem> {
+        self.server_last_tips.get(&server).unwrap_or(vec![])
+    }
+
+    pub fn view_ranking(&self, server: String, coin: String) -> Vec<RankingItem> {
+        self.server_ranking
+            .get(&ServerCoin { server, coin })
+            .unwrap_or(vec![])
+    }
+}
+
+impl Contract {
+    fn update_analytics_records(
+        &mut self,
+        user: String,
+        receiver: String,
+        server: String,
+        coin: String,
+        amount: u128,
+    ) {
+        let user_new_amount =
+            self.update_user_history(user.clone(), server.clone(), coin.clone(), amount);
+        self.update_last_tips(user.clone(), receiver, server.clone(), coin.clone(), amount);
+        self.update_ranking(user, server, coin, user_new_amount);
+    }
+
+    fn update_user_history(
+        &mut self,
+        user: String,
+        server: String,
+        coin: String,
+        amount: u128,
+    ) -> u128 {
+        let key = ServerCoinUser { server, coin, user };
+        let current_balance = self.user_history.get(&key).unwrap_or(0);
+        let new_balance = current_balance + amount;
+        self.user_history.insert(&key, &new_balance);
+        new_balance
+    }
+
+    fn update_last_tips(
+        &mut self,
+        sender: String,
+        receiver: String,
+        server: String,
+        coin: String,
+        amount: u128,
+    ) {
+        let transaction = LastTransactionsItem {
+            sender,
+            receiver,
+            coin,
+            amount: U128(amount),
+        };
+
+        let mut current_vec = self
+            .server_last_tips
+            .get(&server)
+            .unwrap_or(Vec::with_capacity(5));
+
+        current_vec.insert(0, transaction);
+
+        if current_vec.len() > 5 {
+            current_vec.pop();
+        }
+
+        self.server_last_tips.insert(&server, &current_vec);
+    }
+
+    fn update_ranking(&mut self, user: String, server: String, coin: String, amount: u128) {
+        let key = ServerCoin { server, coin };
+
+        let user_entry = RankingItem {
+            user: user.clone(),
+            amount: U128(amount),
+        };
+
+        let mut current_ranking = self
+            .server_ranking
+            .get(&key)
+            .unwrap_or(Vec::with_capacity(5));
+
+        // exclude same user if present
+        current_ranking.retain(|entry| entry.user != user);
+
+        let mut index = 0;
+        let mut user_inserted = false;
+        while index < current_ranking.len() {
+            let entry = current_ranking.get(index).unwrap();
+            if entry.amount.0 < amount {
+                current_ranking.insert(index, user_entry.clone());
+                user_inserted = true;
+                break;
+            }
+            index += 1;
+        }
+
+        if current_ranking.len() > 5 {
+            current_ranking.pop();
+        } else if current_ranking.len() < 5 && !user_inserted {
+            current_ranking.push(user_entry);
+        }
+
+        self.server_ranking.insert(&key, &current_ranking);
     }
 }
 
@@ -198,5 +368,4 @@ mod tests {
         let contract = Contract::new(OWNER_ACCOUNT.to_string());
         assert_eq!(contract.owner_id, OWNER_ACCOUNT.to_string())
     }
-
 }

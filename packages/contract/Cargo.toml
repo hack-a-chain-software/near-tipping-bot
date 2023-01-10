@@ -1,6 +1,6 @@
 [package]
-name = "peter_wire_bot"
-version = "0.1.0"
+name = "near-tipping-bot"
+version = "0.2.0"
 authors = ["Jack the dev", "Peter pan"]
 edition = "2018"
 

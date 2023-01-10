@@ -4,7 +4,9 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "test": "cargo test -- --nocapture",
-    "build": "RUSTFLAGS='-C link-arg=-s' cargo build --target wasm32-unknown-unknown --release"
+    "test:unit": "cargo test -- --nocapture",
+    "test:integration": "yarn build && yarn build:test_token && cd tests && cargo test -- --nocapture",
+    "build:test_token": "cd test_token && RUSTFLAGS='-C link-arg=-s' cargo build --target wasm32-unknown-unknown --release && mkdir -p ../out && cp target/wasm32-unknown-unknown/release/test_token.wasm ../out/test_token.wasm",
+    "build": "RUSTFLAGS='-C link-arg=-s' cargo build --target wasm32-unknown-unknown --release && mkdir -p out && cp target/wasm32-unknown-unknown/release/near_tipping_bot.wasm out/near_tipping_bot.wasm"
   }
 }
