@@ -1,6 +1,5 @@
-import routes from "~react-pages";
-import { Header } from "@/components/header";
 import Space from "./space";
+import routes from "~react-pages";
 import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 const Pages = () => {
