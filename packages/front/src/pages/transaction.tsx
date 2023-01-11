@@ -47,7 +47,6 @@ export const TransactionPage = () => {
 
       for (let i = 0; i < transactions.length; i++) {
         const state = await getTransactionState(transactions[i], accountId);
-
         states.push(state);
       }
 
@@ -90,12 +89,12 @@ export const TransactionPage = () => {
         amount: new Big(amount!).mul(decimals).toString(),
         memo: null,
         msg: JSON.stringify({
-          receiver: accountId,
+          receiver: receiver,
           sender_discord: "",
           receiver_discord: "",
           server_discord: "",
         }),
-        receiver_id: import.meta.env.VITE_CONTRACT,
+        receiver_id: receiver,
       })
     );
 
@@ -109,10 +108,36 @@ export const TransactionPage = () => {
     paragraphRef.current!.innerHTML = "Hash number copied to clipboard";
   };
 
+  if (!status) {
+    return (
+      <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+        <div className="flex flex-col items-center md:flex-row">
+          <img
+            src="/images/tipping_bot_loading_page.png"
+            alt="Tipping bot loading"
+          />
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-5 items-center">
+              <h1 className="font-extrabold text-[2.5rem] text-white">
+                Processing
+              </h1>
+              <div className="bg-bn-gradient w-10 h-10 rounded-[50%]" />
+            </div>
+            <h2 className="font-medium text-white/80 text-xl">
+              Processing your sending
+            </h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div
-        className={`bg-grey-100 w-[95%] max-w-[450px] h-80 flex flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
+        className={`bg-grey-100 w-[95%] max-w-[450px] h-80 ${
+          status ? "hidden" : "flex"
+        } flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
       >
         {accountId ? (
           <>
@@ -156,79 +181,67 @@ export const TransactionPage = () => {
           </>
         )}
       </div>
-      {/* <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
-        <div className="flex flex-col items-center md:flex-row">
-          <img
-            src="/images/tipping_bot_loading_page.png"
-            alt="Tipping bot loading"
-          />
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-5 items-center">
-              <h1 className="font-extrabold text-[2.5rem] text-white">
-                Processing
-              </h1>
-              <div className="bg-bn-gradient w-10 h-10 rounded-[50%]" />
+      {status.status === "success" && (
+        <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+          <div className="flex flex-col items-center md:flex-row">
+            <img
+              src="/images/tipping_bot_transaction_succeed.png"
+              alt="Tipping bot succeed"
+            />
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-5 items-center mb-6">
+                <h1 className="font-extrabold text-[2.5rem] text-white">
+                  Tokens sent succesfully
+                </h1>
+                <CheckCircleIcon width={50} className="text-green-300" />
+              </div>
+              <h2 className="font-normal text-white/80 text-xl">
+                Here’s your hash number :)
+              </h2>
+              <div className="w-full bg-lilac flex p-2 px-5 rounded-xl border-2 border-azoxo">
+                <input
+                  type="text"
+                  className="w-full bg-transparent outline-none font-normal text-lg selection:bg-transparent"
+                  value={"123456789"}
+                  ref={inputCopy}
+                />
+                <ClipboardDocumentIcon
+                  width={24}
+                  className="text-azoxo cursor-pointer"
+                  onClick={handleClickCopy}
+                />
+              </div>
+              <p
+                ref={paragraphRef}
+                className="font-normal text-white/80 text-md"
+              >
+                {paragraphRef.current?.textContent}
+              </p>
             </div>
-            <h2 className="font-medium text-white/80 text-xl">
-              Processing your sending
-            </h2>
           </div>
         </div>
-      </div> */}
-      {/* <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
-        <div className="flex flex-col items-center md:flex-row">
-          <img
-            src="/images/tipping_bot_transaction_succeed.png"
-            alt="Tipping bot succeed"
-          />
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-5 items-center mb-6">
-              <h1 className="font-extrabold text-[2.5rem] text-white">
-                Tokens sent succesfully
-              </h1>
-              <CheckCircleIcon width={50} className="text-green-300" />
+      )}
+      {status.status === "error" && (
+        <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+          <div className="flex flex-col items-center md:flex-row">
+            <img
+              src="/images/tipping_bot_transaction_error.png"
+              alt="Tipping bot error"
+            />
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-5 items-center">
+                <h1 className="font-extrabold text-[2.5rem] text-white">
+                  Something went wrong :(
+                </h1>
+              </div>
+              <h2 className="font-medium text-white/80 text-xl">Error 101</h2>
+              <span className="font-normal text-white/80 mt-[-10px]">
+                Try again later
+              </span>
             </div>
-            <h2 className="font-normal text-white/80 text-xl">
-              Here’s your hash number :)
-            </h2>
-            <div className="w-full bg-lilac flex p-2 px-5 rounded-xl border-2 border-azoxo">
-              <input
-                type="text"
-                className="w-full bg-transparent outline-none font-normal text-lg selection:bg-transparent"
-                value={"123456789"}
-                ref={inputCopy}
-              />
-              <ClipboardDocumentIcon
-                width={24}
-                className="text-azoxo cursor-pointer"
-                onClick={handleClickCopy}
-              />
-            </div>
-            <p ref={paragraphRef} className="font-normal text-white/80 text-md">
-              {paragraphRef.current?.textContent}
-            </p>
           </div>
         </div>
-      </div> */}
-      {/* <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
-        <div className="flex flex-col items-center md:flex-row">
-          <img
-            src="/images/tipping_bot_transaction_error.png"
-            alt="Tipping bot error"
-          />
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-5 items-center">
-              <h1 className="font-extrabold text-[2.5rem] text-white">
-                Something went wrong :(
-              </h1>
-            </div>
-            <h2 className="font-medium text-white/80 text-xl">Error 101</h2>
-            <span className="font-normal text-white/80 mt-[-10px]">
-              Try again later
-            </span>
-          </div>
-        </div>
-      </div> */}
+      )}
     </>
   );
 };
