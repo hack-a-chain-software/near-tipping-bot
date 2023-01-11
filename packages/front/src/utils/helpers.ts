@@ -266,7 +266,7 @@ export interface TransactionPayload {
   receipts_outcome: ReceiptOutcome[];
 }
 
-interface Transaction {
+export interface Transaction {
   actions: Action[];
   hash: string;
   nonce: number;
@@ -309,8 +309,8 @@ interface Status {
 }
 
 interface TransactionSend {
-  signerId: string;
-  receiverId: string;
+  signer_id: string;
+  receiver_id: string;
   actions: Action[];
 }
 
