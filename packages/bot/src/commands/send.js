@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const getSendParameters = require("../graphql/queries/getSendParameters");
 const listServerTokens = require("../graphql/queries/listServerTokens");
-const findUserWallet = require("../graphql/queries/findUserWallet");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -60,8 +59,6 @@ module.exports = {
     const amount = interaction.options.getString("amount");
     const receiver = interaction.options.getUser("receiver");
 
-    const receiverWallet = await findUserWallet(receiver.id, serverId);
-
     const { token, wallet } = await getSendParameters(
       serverId,
       receiver.id,
@@ -87,13 +84,17 @@ module.exports = {
       return;
     }
 
+    const linkToTransfer = `Click the link to transfer: https://peterthebot.com/transaction?token=${
+      token.id
+    }&amount=${amount.replace(
+      /,/g,
+      "."
+    )}&receiver=${wallet}&burner=${burnWallet}&receiver_id=${
+      receiver.id
+    }&sender_id=${sender.id}&server_id=${serverId}`;
+
     await interaction.reply({
-      content: `Click the link to transfer: https://peterthebot.com/transaction?token=${
-        token.id
-      }&amount=${amount.replace(
-        /,/g,
-        "."
-      )}&receiver=${wallet}&burner=${burnWallet}`,
+      content: linkToTransfer,
       ephemeral: true,
     });
   },
