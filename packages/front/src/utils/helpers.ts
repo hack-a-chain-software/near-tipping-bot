@@ -7,11 +7,12 @@ import {
   transactions,
   providers,
 } from "near-api-js";
+import { Buffer } from "buffer";
 
 import type { CodeResult } from "near-api-js/lib/providers/provider";
 import actions from "./actions";
 
-import BN from "bn.js";
+import { WalletSelector } from "@near-wallet-selector/core";
 
 declare global {
   interface Window {
@@ -23,7 +24,7 @@ declare global {
   }
 }
 
-window.Buffer = window.Buffer || require("buffer").Buffer;
+window.Buffer = window.Buffer || Buffer;
 
 const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
@@ -94,7 +95,7 @@ export async function sendMoneyCall(receiver, amount) {
 
 export async function initializeTokenContract(address, receiver, amount) {
   const account = window.walletConnection.account();
-  let transactionsArray: any[] = [];
+  const transactionsArray: any[] = [];
 
   //MAIN NET RPC PROVIDER
   const provider = new providers.JsonRpcProvider(
@@ -163,7 +164,7 @@ export async function initializeTokenContract(address, receiver, amount) {
     finality: "optimistic",
   })) as any;
 
-  let contractStorage = JSON.parse(
+  const contractStorage = JSON.parse(
     Buffer.from(rawContractStorage.result).toString()
   );
 
@@ -346,7 +347,7 @@ export const getTransactionsAction = (
         return;
       }
 
-      const status = getTransactionsStatus(payload?.receipts_outcome!);
+      const status = getTransactionsStatus(payload.receipts_outcome!);
 
       return {
         status,
@@ -407,9 +408,9 @@ export const getTransaction = (
 };
 
 export const viewFunction = async (
-  selector,
-  contractId,
-  methodName,
+  selector: WalletSelector,
+  contractId: string,
+  methodName: string,
   args = {}
 ) => {
   const { network } = selector.options;

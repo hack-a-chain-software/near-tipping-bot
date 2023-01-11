@@ -19,10 +19,11 @@ const transactionHashes = new URLSearchParams(window.location.search).get(
 );
 
 //url format:
-// http://localhost:3000/.com/transaction?token=hack_token.testnet&amount=55&receiver=peter_pan.testnet
+// http://localhost:3000/transaction?token=maui.41c17b3a8dfac477986atokenlauncher.testnet&amount=55&receiver=botteste2.testnet&receiver_id=966754736734871552&sender_id=443131097296011264&server_id=966760651529814086
 // http://localhost:3000/.com/transaction?token=$NEAR&amount=0.001&receiver=10tri.near
 export const TransactionPage = () => {
   const [status, setStatus] = useState<any>();
+  console.log(status);
   const inputCopy = useRef<HTMLInputElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const queryParams = new URLSearchParams(window.location.search);
@@ -31,6 +32,9 @@ export const TransactionPage = () => {
   // const burner = queryParams.get("burner");
   const amount = queryParams.get("amount");
   const receiver = queryParams.get("receiver");
+  const receiverId = queryParams.get("receiver_id");
+  const senderId = queryParams.get("sender_id");
+  const serverId = queryParams.get("server_id");
 
   const { accountId, toggleModal, connection, signOut } =
     useNearWalletSelector();
@@ -66,7 +70,7 @@ export const TransactionPage = () => {
 
     const tokenStorage = await getTokenStorage(connection, accountId, token);
 
-    const metadata = await viewFunction(connection, token, "ft_metadata");
+    const metadata = await viewFunction(connection, token!, "ft_metadata");
 
     const decimals = new Big(10).pow(metadata.decimals);
 
@@ -85,17 +89,22 @@ export const TransactionPage = () => {
       );
     }
     transactions.push(
-      getTransaction(accountId!, token!, "ft_transfer_call", {
-        amount: new Big(amount!).mul(decimals).toString(),
-        memo: null,
-        msg: JSON.stringify({
-          receiver: receiver,
-          sender_discord: "",
-          receiver_discord: "",
-          server_discord: "",
-        }),
-        receiver_id: receiver,
-      })
+      getTransaction(
+        accountId!,
+        import.meta.env.VITE_CONTRACT,
+        "ft_transfer_call",
+        {
+          amount: new Big(amount!).mul(decimals).toString(),
+          memo: null,
+          msg: JSON.stringify({
+            receiver: receiver,
+            sender_discord: senderId,
+            receiver_discord: receiverId,
+            server_discord: serverId,
+          }),
+          receiver_id: token,
+        }
+      )
     );
 
     executeMultipleTransactions(transactions, wallet);
@@ -108,36 +117,34 @@ export const TransactionPage = () => {
     paragraphRef.current!.innerHTML = "Hash number copied to clipboard";
   };
 
-  if (!status) {
-    return (
-      <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
-        <div className="flex flex-col items-center md:flex-row">
-          <img
-            src="/images/tipping_bot_loading_page.png"
-            alt="Tipping bot loading"
-          />
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-5 items-center">
-              <h1 className="font-extrabold text-[2.5rem] text-white">
-                Processing
-              </h1>
-              <div className="bg-bn-gradient w-10 h-10 rounded-[50%]" />
-            </div>
-            <h2 className="font-medium text-white/80 text-xl">
-              Processing your sending
-            </h2>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (!status) {
+  //   return (
+  //     <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+  //       <div className="flex flex-col items-center md:flex-row">
+  //         <img
+  //           src="/images/tipping_bot_loading_page.png"
+  //           alt="Tipping bot loading"
+  //         />
+  //         <div className="flex flex-col gap-3">
+  //           <div className="flex gap-5 items-center">
+  //             <h1 className="font-extrabold text-[2.5rem] text-white">
+  //               Processing
+  //             </h1>
+  //             <div className="bg-bn-gradient w-10 h-10 rounded-[50%]" />
+  //           </div>
+  //           <h2 className="font-medium text-white/80 text-xl">
+  //             Processing your sending
+  //           </h2>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
       <div
-        className={`bg-grey-100 w-[95%] max-w-[450px] h-80 ${
-          status ? "hidden" : "flex"
-        } flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
+        className={`bg-grey-100 w-[95%] max-w-[450px] h-80 flex flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
       >
         {accountId ? (
           <>
@@ -181,7 +188,7 @@ export const TransactionPage = () => {
           </>
         )}
       </div>
-      {status.status === "success" && (
+      {/* {status.status === "success" && (
         <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
           <div className="flex flex-col items-center md:flex-row">
             <img
@@ -191,7 +198,7 @@ export const TransactionPage = () => {
             <div className="flex flex-col gap-3">
               <div className="flex gap-5 items-center mb-6">
                 <h1 className="font-extrabold text-[2.5rem] text-white">
-                  Tokens sent succesfully
+                 {status.message}
                 </h1>
                 <CheckCircleIcon width={50} className="text-green-300" />
               </div>
@@ -231,7 +238,7 @@ export const TransactionPage = () => {
             <div className="flex flex-col gap-3">
               <div className="flex gap-5 items-center">
                 <h1 className="font-extrabold text-[2.5rem] text-white">
-                  Something went wrong :(
+                  {status.message} :(
                 </h1>
               </div>
               <h2 className="font-medium text-white/80 text-xl">Error 101</h2>
@@ -241,7 +248,7 @@ export const TransactionPage = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
