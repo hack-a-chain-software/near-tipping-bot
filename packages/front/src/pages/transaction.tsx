@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import Big from "big.js";
+import { useEffect, useRef, useState } from "react";
 import {
   getTransactionState,
   getTransactionsAction,
@@ -14,6 +14,12 @@ import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import { useNearWalletSelector } from "@/utils/context/wallet";
 import { RobotIcon } from "@/components";
 
+interface ActionProps {
+  status: string;
+  message: string;
+  transactionHash?: string;
+}
+
 const transactionHashes = new URLSearchParams(window.location.search).get(
   "transactionHashes"
 );
@@ -22,8 +28,8 @@ const transactionHashes = new URLSearchParams(window.location.search).get(
 // http://localhost:3000/transaction?token=maui.41c17b3a8dfac477986atokenlauncher.testnet&amount=55&receiver=botteste2.testnet&receiver_id=966754736734871552&sender_id=443131097296011264&server_id=966760651529814086
 // http://localhost:3000/.com/transaction?token=$NEAR&amount=0.001&receiver=10tri.near
 export const TransactionPage = () => {
-  const [status, setStatus] = useState<any>();
-  console.log(status);
+  const [action, setAction] = useState<ActionProps>();
+
   const inputCopy = useRef<HTMLInputElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const queryParams = new URLSearchParams(window.location.search);
@@ -59,7 +65,7 @@ export const TransactionPage = () => {
       if (!action) {
         return;
       }
-      setStatus(action);
+      setAction(action);
     })();
   }, [accountId]);
 
@@ -117,34 +123,38 @@ export const TransactionPage = () => {
     paragraphRef.current!.innerHTML = "Hash number copied to clipboard";
   };
 
-  // if (!status) {
-  //   return (
-  //     <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
-  //       <div className="flex flex-col items-center md:flex-row">
-  //         <img
-  //           src="/images/tipping_bot_loading_page.png"
-  //           alt="Tipping bot loading"
-  //         />
-  //         <div className="flex flex-col gap-3">
-  //           <div className="flex gap-5 items-center">
-  //             <h1 className="font-extrabold text-[2.5rem] text-white">
-  //               Processing
-  //             </h1>
-  //             <div className="bg-bn-gradient w-10 h-10 rounded-[50%]" />
-  //           </div>
-  //           <h2 className="font-medium text-white/80 text-xl">
-  //             Processing your sending
-  //           </h2>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!status && transactionHashes) {
+    return (
+      <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+        <div className="flex flex-col items-center md:flex-row">
+          <img
+            src="/images/tipping_bot_loading_page.png"
+            alt="Tipping bot loading"
+          />
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-5 items-center">
+              <h1 className="font-extrabold text-[2.5rem] text-white">
+                Processing
+              </h1>
+              <div className="relative w-10 h-10 animate-spin rounded-full bg-bn-gradient">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-graphite rounded-full" />
+              </div>
+            </div>
+            <h2 className="font-medium text-white/80 text-xl">
+              Processing your sending
+            </h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <div
-        className={`bg-grey-100 w-[95%] max-w-[450px] h-80 flex flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
+        className={`bg-grey-100 w-[95%] max-w-[450px] h-80 ${
+          status ? "hidden" : "flex"
+        } flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
       >
         {accountId ? (
           <>
@@ -188,7 +198,7 @@ export const TransactionPage = () => {
           </>
         )}
       </div>
-      {/* {status.status === "success" && (
+      {action && action.status === "success" && (
         <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
           <div className="flex flex-col items-center md:flex-row">
             <img
@@ -198,7 +208,7 @@ export const TransactionPage = () => {
             <div className="flex flex-col gap-3">
               <div className="flex gap-5 items-center mb-6">
                 <h1 className="font-extrabold text-[2.5rem] text-white">
-                 {status.message}
+                  {action.message}
                 </h1>
                 <CheckCircleIcon width={50} className="text-green-300" />
               </div>
@@ -228,7 +238,7 @@ export const TransactionPage = () => {
           </div>
         </div>
       )}
-      {status.status === "error" && (
+      {action && action.status === "error" && (
         <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
           <div className="flex flex-col items-center md:flex-row">
             <img
@@ -238,7 +248,7 @@ export const TransactionPage = () => {
             <div className="flex flex-col gap-3">
               <div className="flex gap-5 items-center">
                 <h1 className="font-extrabold text-[2.5rem] text-white">
-                  {status.message} :(
+                  {action.message}
                 </h1>
               </div>
               <h2 className="font-medium text-white/80 text-xl">Error 101</h2>
@@ -248,7 +258,7 @@ export const TransactionPage = () => {
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </>
   );
 };
