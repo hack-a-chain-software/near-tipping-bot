@@ -8,8 +8,8 @@ export interface Actionable {
 
 export const actions = [
   {
-    error: "Something happened when sending the tokens.",
-    success: "Tokens sent succesfully.",
+    error: "Something went wrong :(",
+    success: "Tokens sent succesfully",
     check: ({ transaction: { actions } }: TransactionPayload) => {
       const [action] = actions;
 

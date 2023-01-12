@@ -12,7 +12,10 @@ import { Buffer } from "buffer";
 import type { CodeResult } from "near-api-js/lib/providers/provider";
 import actions from "./actions";
 
-import { WalletSelector } from "@near-wallet-selector/core";
+import {
+  BridgeWalletBehaviour,
+  WalletSelector,
+} from "@near-wallet-selector/core";
 
 declare global {
   interface Window {
@@ -360,7 +363,7 @@ export const getTransactionsAction = (
 
 export const AttachedGas = "300000000000000";
 
-const refreshPage = (transactions) => {
+const refreshPage = (transactions: string) => {
   const newUrl =
     window.location.origin +
     window.location.pathname +
@@ -389,7 +392,7 @@ export const getTransaction = (
   method: string,
   args: any,
   amount?: string
-): Transaction => {
+): any => {
   return {
     signerId,
     receiverId,
