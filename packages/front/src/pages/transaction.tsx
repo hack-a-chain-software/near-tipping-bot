@@ -74,13 +74,29 @@ export const TransactionPage = () => {
 
     const transactions: Transaction[] = [];
 
-    const tokenStorage = await getTokenStorage(connection, accountId, token);
+    const rawAccountStorage = await getTokenStorage(
+      connection,
+      accountId,
+      token
+    );
+
+    const rawReceiverStorage = await getTokenStorage(
+      connection,
+      receiver,
+      token
+    );
+
+    const rawContractStorage = await getTokenStorage(
+      connection,
+      import.meta.env.VITE_CONTRACT,
+      token
+    );
 
     const metadata = await viewFunction(connection, token!, "ft_metadata");
 
     const decimals = new Big(10).pow(metadata.decimals);
 
-    if (!tokenStorage) {
+    if (!rawAccountStorage) {
       transactions.push(
         getTransaction(
           accountId!,
@@ -88,29 +104,54 @@ export const TransactionPage = () => {
           "storage_deposit",
           {
             account_id: accountId,
-            registration_only: false,
+            registration_only: true,
+          },
+          "0.25"
+        )
+      );
+    }
+
+    if (!rawReceiverStorage) {
+      transactions.push(
+        getTransaction(
+          accountId!,
+          token!,
+          "storage_deposit",
+          {
+            account_id: receiver,
+            registration_only: true,
+          },
+          "0.25"
+        )
+      );
+    }
+
+    if (!rawContractStorage) {
+      transactions.push(
+        getTransaction(
+          accountId!,
+          token!,
+          "storage_deposit",
+          {
+            account_id: import.meta.env.VITE_CONTRACT,
+            registration_only: true,
           },
           "0.25"
         )
       );
     }
     transactions.push(
-      getTransaction(
-        accountId!,
-        import.meta.env.VITE_CONTRACT,
-        "ft_transfer_call",
-        {
-          amount: new Big(amount!).mul(decimals).toString(),
-          memo: null,
-          msg: JSON.stringify({
-            receiver: receiver,
-            sender_discord: senderId,
-            receiver_discord: receiverId,
-            server_discord: serverId,
-          }),
-          receiver_id: token,
-        }
-      )
+      getTransaction(accountId!, token!, "ft_transfer_call", {
+        amount: new Big(amount!).mul(decimals).toString(),
+        memo: null,
+        msg: JSON.stringify({
+          receiver: receiver,
+          sender_discord: senderId,
+          receiver_discord: receiverId,
+          server_discord: serverId,
+        }),
+        receiver_id: import.meta.env.VITE_CONTRACT,
+      })
     );
 
     executeMultipleTransactions(transactions, wallet);
@@ -123,9 +164,9 @@ export const TransactionPage = () => {
     paragraphRef.current!.innerHTML = "Hash number copied to clipboard";
   };
 
-  if (!status && transactionHashes) {
+  if (!action && transactionHashes) {
     return (
-      <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+      <div className="w-full h-screen bg-graphite flex justify-center items-center">
         <div className="flex flex-col items-center md:flex-row">
           <img
             src="/images/tipping_bot_loading_page.png"
@@ -153,7 +194,7 @@ export const TransactionPage = () => {
     <>
       <div
         className={`bg-grey-100 w-[95%] max-w-[450px] h-80 ${
-          status ? "hidden" : "flex"
+          action ? "hidden" : "flex"
         } flex-col items-center justify-center gap-10 mx-auto rounded-xl translate-y-3/4`}
       >
         {accountId ? (
@@ -199,7 +240,7 @@ export const TransactionPage = () => {
         )}
       </div>
       {action && action.status === "success" && (
-        <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+        <div className="w-full h-screen bg-graphite flex justify-center items-center">
           <div className="flex flex-col items-center md:flex-row">
             <img
               src="/images/tipping_bot_transaction_succeed.png"
@@ -219,7 +260,7 @@ export const TransactionPage = () => {
                 <input
                   type="text"
                   className="w-full bg-transparent outline-none font-normal text-lg selection:bg-transparent"
-                  value={"123456789"}
+                  value={action.transactionHash}
                   ref={inputCopy}
                 />
                 <ClipboardDocumentIcon
@@ -239,7 +280,7 @@ export const TransactionPage = () => {
         </div>
       )}
       {action && action.status === "error" && (
-        <div className="w-full h-[100vh] bg-graphite flex justify-center items-center">
+        <div className="w-full h-screen bg-graphite flex justify-center items-center">
           <div className="flex flex-col items-center md:flex-row">
             <img
               src="/images/tipping_bot_transaction_error.png"
