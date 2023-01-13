@@ -8,6 +8,7 @@ import {
   viewFunction,
   getTokenStorage,
   Transaction,
+  sendNear,
 } from "@/utils/helpers";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
@@ -91,6 +92,10 @@ export const TransactionPage = () => {
       import.meta.env.VITE_CONTRACT,
       token
     );
+
+    if (token === "near") {
+      await sendNear(receiver!, accountId!, amount!);
+    }
 
     const metadata = await viewFunction(connection, token!, "ft_metadata");
 
