@@ -16,6 +16,16 @@ export const actions = [
       return action.FunctionCall.method_name === "ft_transfer_call";
     },
   },
+
+  {
+    error: "Something went wrong :(",
+    success: "Tokens sent succesfully",
+    check: ({ transaction: { actions } }: TransactionPayload) => {
+      const [action] = actions;
+
+      return action.FunctionCall.method_name === "transfer_payment";
+    },
+  },
 ];
 
 export default actions;

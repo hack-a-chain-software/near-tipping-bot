@@ -8,7 +8,6 @@ import {
   viewFunction,
   getTokenStorage,
   Transaction,
-  sendNear,
 } from "@/utils/helpers";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
@@ -26,7 +25,7 @@ const transactionHashes = new URLSearchParams(window.location.search).get(
 );
 
 //url format:
-// http://localhost:3000/transaction?token=maui.41c17b3a8dfac477986atokenlauncher.testnet&amount=55&receiver=botteste2.testnet&receiver_id=966754736734871552&sender_id=443131097296011264&server_id=966760651529814086
+//http://localhost:3000/transaction?token=near&amount=10&receiver=botteste2.testnet&receiver_id=966754736734871552&sender_id=443131097296011264&server_id=966760651529814086
 // http://localhost:3000/.com/transaction?token=$NEAR&amount=0.001&receiver=10tri.near
 export const TransactionPage = () => {
   const [action, setAction] = useState<ActionProps>();
@@ -75,89 +74,105 @@ export const TransactionPage = () => {
 
     const transactions: Transaction[] = [];
 
-    const rawAccountStorage = await getTokenStorage(
-      connection,
-      accountId,
-      token
-    );
-
-    const rawReceiverStorage = await getTokenStorage(
-      connection,
-      receiver,
-      token
-    );
-
-    const rawContractStorage = await getTokenStorage(
-      connection,
-      import.meta.env.VITE_CONTRACT,
-      token
-    );
-
     if (token === "near") {
-      await sendNear(receiver!, accountId!, amount!);
-    }
+      const decimals = new Big(10).pow(24);
 
-    const metadata = await viewFunction(connection, token!, "ft_metadata");
-
-    const decimals = new Big(10).pow(metadata.decimals);
-
-    if (!rawAccountStorage) {
       transactions.push(
         getTransaction(
           accountId!,
-          token!,
-          "storage_deposit",
+          import.meta.env.VITE_CONTRACT,
+          "transfer_payment",
           {
-            account_id: accountId,
-            registration_only: true,
+            receiver: receiver,
+            sender_discord: senderId,
+            receiver_discord: receiverId,
+            server_discord: serverId,
           },
-          "0.25"
+          Big(amount!).mul(decimals).toFixed(0)
         )
       );
-    }
+    } else {
+      const rawAccountStorage = await getTokenStorage(
+        connection,
+        accountId,
+        token
+      );
 
-    if (!rawReceiverStorage) {
-      transactions.push(
-        getTransaction(
-          accountId!,
-          token!,
-          "storage_deposit",
-          {
-            account_id: receiver,
-            registration_only: true,
-          },
-          "0.25"
-        )
+      const rawReceiverStorage = await getTokenStorage(
+        connection,
+        receiver,
+        token
       );
-    }
 
-    if (!rawContractStorage) {
+      const rawContractStorage = await getTokenStorage(
+        connection,
+        import.meta.env.VITE_CONTRACT,
+        token
+      );
+
+      if (!rawAccountStorage) {
+        transactions.push(
+          getTransaction(
+            accountId!,
+            token!,
+            "storage_deposit",
+            {
+              account_id: accountId,
+              registration_only: true,
+            },
+            "0.25"
+          )
+        );
+      }
+
+      if (!rawReceiverStorage) {
+        transactions.push(
+          getTransaction(
+            accountId!,
+            token!,
+            "storage_deposit",
+            {
+              account_id: receiver,
+              registration_only: true,
+            },
+            "0.25"
+          )
+        );
+      }
+
+      if (!rawContractStorage) {
+        transactions.push(
+          getTransaction(
+            accountId!,
+            token!,
+            "storage_deposit",
+            {
+              account_id: import.meta.env.VITE_CONTRACT,
+              registration_only: true,
+            },
+            "0.25"
+          )
+        );
+      }
+
+      const metadata = await viewFunction(connection, token!, "ft_metadata");
+
+      const decimals = new Big(10).pow(metadata.decimals);
+
       transactions.push(
-        getTransaction(
-          accountId!,
-          token!,
-          "storage_deposit",
-          {
-            account_id: import.meta.env.VITE_CONTRACT,
-            registration_only: true,
-          },
-          "0.25"
-        )
+        getTransaction(accountId!, token!, "ft_transfer_call", {
+          amount: Big(amount!).mul(decimals).toString(),
+          memo: null,
+          msg: JSON.stringify({
+            receiver: receiver,
+            sender_discord: senderId,
+            receiver_discord: receiverId,
+            server_discord: serverId,
+          }),
+          receiver_id: import.meta.env.VITE_CONTRACT,
+        })
       );
     }
-    transactions.push(
-      getTransaction(accountId!, token!, "ft_transfer_call", {
-        amount: new Big(amount!).mul(decimals).toString(),
-        memo: null,
-        msg: JSON.stringify({
-          receiver: receiver,
-          sender_discord: senderId,
-          receiver_discord: receiverId,
-          server_discord: serverId,
-        }),
-        receiver_id: import.meta.env.VITE_CONTRACT,
-      })
-    );
 
     executeMultipleTransactions(transactions, wallet);
   };
