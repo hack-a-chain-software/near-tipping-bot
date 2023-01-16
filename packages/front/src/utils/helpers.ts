@@ -1,12 +1,10 @@
-import { utils, providers, connect, keyStores } from "near-api-js";
+import { utils, providers } from "near-api-js";
 import { Buffer } from "buffer";
 
 import type { CodeResult } from "near-api-js/lib/providers/provider";
 import actions from "./actions";
 
 import { WalletSelector } from "@near-wallet-selector/core";
-import Big from "big.js";
-import { signTransaction } from "near-api-js/lib/transaction";
 
 export interface TransactionPayload {
   status: Status;
@@ -70,31 +68,6 @@ const rpcProviders = {
 export const provider = new providers.JsonRpcProvider(
   rpcProviders[import.meta.env.VITE_NEAR_NETWORK]
 );
-
-const myKeyStore = new keyStores.BrowserLocalStorageKeyStore();
-
-const connectionConfig = {
-  networkId: import.meta.env.VITE_NEAR_NETWORK,
-  deps: {
-    keyStore: myKeyStore,
-  },
-  nodeUrl: import.meta.env.NODE_URL,
-  walletUrl: import.meta.env.WALLET_URL,
-  helperUrl: import.meta.env.HELPER_URL,
-  explorerUrl: import.meta.env.EXPLORER_URL,
-  contractName: import.meta.env.VITE_CONTRACT,
-};
-
-export const sendNear = async (
-  receiver: string,
-  sender: string,
-  amount: string
-) => {
-  const near = await connect(connectionConfig as any);
-  const account = await near.account(sender);
-
-  await account.sendMoney(receiver, Big(amount).mul(24).toString());
-};
 
 export const getTransactionState = async (txHash: string, accountId: string) =>
   await provider.txStatus(txHash, accountId);
@@ -172,7 +145,12 @@ export const getTransaction = (
           methodName: method,
           args,
           gas: AttachedGas,
-          deposit: amount ? utils.format.parseNearAmount(amount)! : "1",
+          deposit:
+            method === "transfer_payment"
+              ? amount
+              : amount
+              ? utils.format.parseNearAmount(amount)!
+              : "1",
         },
       },
     ],
