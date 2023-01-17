@@ -1,7 +1,7 @@
 {
   "name": "@near/contract",
   "version": "1.0.0",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "test:unit": "cargo test -- --nocapture",
