@@ -6,17 +6,17 @@ const listServerTokens = require("../graphql/queries/listServerTokens");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("viewhistory")
-    .setDescription("See the history of coins sent/received from a user")
+    .setDescription("See the history of tokens sent/received from a user")
     .addUserOption((option) =>
       option
         .setName("user")
-        .setDescription("Choose the user you want to see the history")
+        .setDescription("Choose the user whose history you want to see")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
-        .setName("coin")
-        .setDescription("Choose the currency you want to see in the history")
+        .setName("token")
+        .setDescription("Choose the token you want to see in the history")
         .setRequired(true)
         .setAutocomplete(true)
     ),
@@ -46,7 +46,7 @@ module.exports = {
   async execute(interaction) {
     const serverId = interaction.member.guild.id;
     const user = interaction.options.getUser("user");
-    const coin = interaction.options.getString("coin");
+    const coin = interaction.options.getString("token");
     const tokens = await listServerTokens(serverId);
 
     const amount = await viewFunction("view_history", {
