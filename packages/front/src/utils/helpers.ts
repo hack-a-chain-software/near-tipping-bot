@@ -303,6 +303,4 @@ export const sendCommonToken = async (
       receiver_id: import.meta.env.VITE_CONTRACT,
     })
   );
-
-  executeMultipleTransactions(transactions, wallet);
 };

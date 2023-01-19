@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   getTransactionState,
@@ -90,6 +91,7 @@ export const TransactionPage = () => {
       serverId!
     );
   };
+
 
   if (!action && transactionHashes) {
     return (
