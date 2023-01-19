@@ -9,6 +9,9 @@ import { map, distinctUntilChanged } from "rxjs";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+import meteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import type { AccountView } from "near-api-js/lib/providers/provider";
 import type { WalletSelector, AccountState } from "@near-wallet-selector/core";
 
@@ -57,6 +60,12 @@ export const WalletSelectorContextProvider: React.FC<
         }),
         setupNearWallet({
           iconUrl: "/assets/near-wallet-icon.png",
+        }),
+        setupMyNearWallet({
+          iconUrl: "/assets/my-near-wallet-icon.png",
+        }),
+        setupMeteorWallet({
+          iconUrl: meteorIconUrl,
         }),
       ],
     });
