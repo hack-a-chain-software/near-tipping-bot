@@ -26,6 +26,7 @@
     "near-api-js": "^0.44.2",
     "postcss": "^8.4.13",
     "react": "^18.0.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.0.0",
     "react-highlight-words": "^0.18.0",
     "react-near": "^3.4.8",
