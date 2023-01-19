@@ -1,7 +1,9 @@
 const { providers } = require("near-api-js");
 
 const viewFunction = async (methodName, args = {}) => {
-  const provider = new providers.JsonRpcProvider({ url: process.env.NODE_URL });
+  const provider = new providers.JsonRpcProvider({
+    url: process.env.NEAR_NODE_URL,
+  });
 
   const serializerArgs = Buffer.from(JSON.stringify(args)).toString("base64");
 
