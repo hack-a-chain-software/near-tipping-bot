@@ -55,7 +55,12 @@ module.exports = {
       coin: coin === "near" ? "$NEAR" : coin,
     });
 
-    const token = tokens.find(({ id }) => id === coin);
+    const token = tokens.find(({ id }) => {
+      if (coin === "$NEAR") {
+        return id === "near";
+      }
+      return id === coin;
+    });
 
     if (!token) {
       await interaction.reply({
