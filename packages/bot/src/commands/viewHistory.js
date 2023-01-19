@@ -1,23 +1,22 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const listServerTokens = require("../graphql/queries/listServerTokens");
+const { formatDecimals } = require("../utils/formatDecimals");
 const { viewFunction } = require("../utils/viewFunction");
+const listServerTokens = require("../graphql/queries/listServerTokens");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("viewhistory")
-    .setDescription(
-      "Veja o historico de moedas enviadas/recebidas de um usuario"
-    )
+    .setDescription("See the history of coins sent/received from a user")
     .addUserOption((option) =>
       option
         .setName("user")
-        .setDescription("Informe o usuario que deseja ver o historico")
+        .setDescription("Choose the user you want to see the history")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName("coin")
-        .setDescription("Informe qual a moeda que deseja ver no historico")
+        .setDescription("Choose the currency you want to see in the history")
         .setRequired(true)
         .setAutocomplete(true)
     ),
@@ -48,20 +47,31 @@ module.exports = {
     const serverId = interaction.member.guild.id;
     const user = interaction.options.getUser("user");
     const coin = interaction.options.getString("coin");
+    const tokens = await listServerTokens(serverId);
 
-    const history = await viewFunction("view_history", {
+    const amount = await viewFunction("view_history", {
       server: serverId,
       user: user.id,
-      coin,
+      coin: coin === "near" ? "$NEAR" : coin,
     });
 
-    console.log(history);
+    const token = tokens.find(({ id }) => id === coin);
 
-    const embed = new EmbedBuilder().setTitle(`Historico do ${user.tag}`);
+    if (!token) {
+      await interaction.reply({
+        content: "Choose a token that is on the token list",
+        ephemeral: true,
+      });
 
-    [1, 2, 3, 4, 5].forEach((item) =>
-      embed.addFields({ name: `Item: ${item}`, value: `Item: ${item + 1}` })
-    );
+      return;
+    }
+
+    const embed = new EmbedBuilder()
+      .setTitle(`History of ${user.tag}`)
+      .addFields({
+        name: `Amount of ${token.metadata.name} sent/received`,
+        value: `Amount: ${formatDecimals(amount, token.metadata.decimals)}`,
+      });
 
     await interaction.reply({ embeds: [embed], ephemeral: true });
   },
