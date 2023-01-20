@@ -129,8 +129,11 @@ export const TransactionPage = () => {
         {accountId ? (
           <>
             <RobotIcon />
-            <h2 className="text-white font-semibold">
-              You are logged in wallet: {accountId}
+            <h2 className="text-white w-[90%] font-semibold text-center">
+              You are logged in wallet:
+              <p className="truncate mx-auto" title={accountId}>
+                {accountId}
+              </p>
             </h2>
 
             <div className="flex w-[95%] justify-around mb-7">

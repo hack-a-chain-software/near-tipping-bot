@@ -86,7 +86,10 @@ export function WalletSelectorModal() {
                   {modules.map((module) => (
                     <button
                       key={"wallet-selector-modal-module" + module.id}
-                      onClick={() => handleWalletClick(module)}
+                      onClick={() => {
+                        handleWalletClick(module);
+                        toggleModal();
+                      }}
                       className="border border-black rounded-[13px] py-[12px] px-[24px] text-black h-[56px] flex items-center hover:bg-black hover:text-white"
                     >
                       <img
