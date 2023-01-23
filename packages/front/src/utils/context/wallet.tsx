@@ -9,6 +9,8 @@ import { map, distinctUntilChanged } from "rxjs";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
 import type { AccountView } from "near-api-js/lib/providers/provider";
 import type { WalletSelector, AccountState } from "@near-wallet-selector/core";
 
@@ -52,12 +54,10 @@ export const WalletSelectorContextProvider: React.FC<
       network: import.meta.env.VITE_NEAR_NETWORK,
       debug: true,
       modules: [
-        setupSender({
-          iconUrl: "/assets/sender-icon.png",
-        }),
-        setupNearWallet({
-          iconUrl: "/assets/near-wallet-icon.png",
-        }),
+        setupSender(),
+        setupNearWallet(),
+        setupMyNearWallet(),
+        setupMeteorWallet(),
       ],
     });
 

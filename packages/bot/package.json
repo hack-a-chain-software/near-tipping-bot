@@ -10,10 +10,12 @@
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
+    "big.js": "^6.2.1",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
+    "near-api-js": "^1.1.0",
     "node-fetch": "2",
     "postgraphile": "^4.12.12",
     "postgraphile-upsert-plugin": "^3.2.0"

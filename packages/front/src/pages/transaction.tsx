@@ -1,16 +1,13 @@
-import Big from "big.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getTransactionState,
   getTransactionsAction,
-  getTransaction,
-  executeMultipleTransactions,
-  viewFunction,
-  getTokenStorage,
-  Transaction,
+  sendNear,
+  sendCommonToken,
 } from "@/utils/helpers";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useNearWalletSelector } from "@/utils/context/wallet";
 import { RobotIcon } from "@/components";
 
@@ -29,9 +26,8 @@ const transactionHashes = new URLSearchParams(window.location.search).get(
 // http://localhost:3000/.com/transaction?token=$NEAR&amount=0.001&receiver=10tri.near
 export const TransactionPage = () => {
   const [action, setAction] = useState<ActionProps>();
+  const [textCopy, setTextCopy] = useState<string>("");
 
-  const inputCopy = useRef<HTMLInputElement>(null);
-  const paragraphRef = useRef<HTMLParagraphElement>(null);
   const queryParams = new URLSearchParams(window.location.search);
 
   const token = queryParams.get("token");
@@ -69,119 +65,30 @@ export const TransactionPage = () => {
     })();
   }, [accountId]);
 
-  const handleClickProceed = async () => {
+  const sendMoney = async () => {
     const wallet = await connection.wallet();
 
-    const transactions: Transaction[] = [];
-
     if (token === "near") {
-      const decimals = new Big(10).pow(24);
-
-      transactions.push(
-        getTransaction(
-          accountId!,
-          import.meta.env.VITE_CONTRACT,
-          "transfer_payment",
-          {
-            receiver: receiver,
-            sender_discord: senderId,
-            receiver_discord: receiverId,
-            server_discord: serverId,
-          },
-          Big(amount!).mul(decimals).toFixed(0)
-        )
-      );
-    } else {
-      const rawAccountStorage = await getTokenStorage(
-        connection,
-        accountId,
-        token
-      );
-
-      const rawReceiverStorage = await getTokenStorage(
-        connection,
-        receiver,
-        token
-      );
-
-      const rawContractStorage = await getTokenStorage(
-        connection,
-        import.meta.env.VITE_CONTRACT,
-        token
-      );
-
-      if (!rawAccountStorage) {
-        transactions.push(
-          getTransaction(
-            accountId!,
-            token!,
-            "storage_deposit",
-            {
-              account_id: accountId,
-              registration_only: true,
-            },
-            "0.25"
-          )
-        );
-      }
-
-      if (!rawReceiverStorage) {
-        transactions.push(
-          getTransaction(
-            accountId!,
-            token!,
-            "storage_deposit",
-            {
-              account_id: receiver,
-              registration_only: true,
-            },
-            "0.25"
-          )
-        );
-      }
-
-      if (!rawContractStorage) {
-        transactions.push(
-          getTransaction(
-            accountId!,
-            token!,
-            "storage_deposit",
-            {
-              account_id: import.meta.env.VITE_CONTRACT,
-              registration_only: true,
-            },
-            "0.25"
-          )
-        );
-      }
-
-      const metadata = await viewFunction(connection, token!, "ft_metadata");
-
-      const decimals = new Big(10).pow(metadata.decimals);
-
-      transactions.push(
-        getTransaction(accountId!, token!, "ft_transfer_call", {
-          amount: Big(amount!).mul(decimals).toString(),
-          memo: null,
-          msg: JSON.stringify({
-            receiver: receiver,
-            sender_discord: senderId,
-            receiver_discord: receiverId,
-            server_discord: serverId,
-          }),
-          receiver_id: import.meta.env.VITE_CONTRACT,
-        })
-      );
+      sendNear(wallet, accountId!, amount!, {
+        receiver: receiver,
+        sender_discord: senderId,
+        receiver_discord: receiverId,
+        server_discord: serverId,
+      });
+      return;
     }
 
-    executeMultipleTransactions(transactions, wallet);
-  };
-
-  const handleClickCopy = () => {
-    inputCopy.current?.select();
-    inputCopy.current?.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    paragraphRef.current!.innerHTML = "Hash number copied to clipboard";
+    await sendCommonToken(
+      wallet,
+      connection,
+      accountId!,
+      token!,
+      receiver!,
+      amount!,
+      senderId!,
+      receiverId!,
+      serverId!
+    );
   };
 
   if (!action && transactionHashes) {
@@ -238,7 +145,7 @@ export const TransactionPage = () => {
               </button>
               <button
                 className="bg-azoxo p-3 rounded-md text-white font-semibold text-sm hover:bg-blue_button transition-colors"
-                onClick={async () => await handleClickProceed()}
+                onClick={async () => await sendMoney()}
               >
                 Proceed
               </button>
@@ -277,24 +184,24 @@ export const TransactionPage = () => {
                 Here’s your hash number :)
               </h2>
               <div className="w-full bg-lilac flex p-2 px-5 rounded-xl border-2 border-azoxo">
-                <input
-                  type="text"
-                  className="w-full bg-transparent outline-none font-normal text-lg selection:bg-transparent"
-                  value={action.transactionHash}
-                  ref={inputCopy}
+                <span
+                  className="w-full bg-transparent outline-none font-normal text-lg"
+                  children={action.transactionHash}
                 />
-                <ClipboardDocumentIcon
-                  width={24}
-                  className="text-azoxo cursor-pointer"
-                  onClick={handleClickCopy}
-                />
+                <CopyToClipboard
+                  text={action.transactionHash}
+                  onCopy={() => setTextCopy("Hash number copied to clipboard")}
+                >
+                  <button>
+                    {" "}
+                    <ClipboardDocumentIcon
+                      width={24}
+                      className="text-azoxo cursor-pointer"
+                    />
+                  </button>
+                </CopyToClipboard>
               </div>
-              <p
-                ref={paragraphRef}
-                className="font-normal text-white/80 text-md"
-              >
-                {paragraphRef.current?.textContent}
-              </p>
+              <p className="font-normal text-white/80 text-md">{textCopy}</p>
             </div>
           </div>
         </div>

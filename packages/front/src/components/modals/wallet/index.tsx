@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useNearWalletSelector } from "@/utils/context/wallet";
 import type { ModuleState } from "@near-wallet-selector/core";
 
-export function WalletSelectorModal(props: {}) {
+export function WalletSelectorModal() {
   const { connection, showModal, toggleModal } = useNearWalletSelector();
 
   const [modules, setModules] = useState<ModuleState[]>([]);

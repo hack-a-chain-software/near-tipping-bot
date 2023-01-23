@@ -5,6 +5,7 @@ import type { CodeResult } from "near-api-js/lib/providers/provider";
 import actions from "./actions";
 
 import { WalletSelector } from "@near-wallet-selector/core";
+import Big from "big.js";
 
 export interface TransactionPayload {
   status: Status;
@@ -192,4 +193,116 @@ export const getTokenStorage = async (connection, account, token) => {
   } catch (e) {
     return;
   }
+};
+
+export const sendNear = (
+  wallet: any,
+  accountId: string,
+  amount?: string,
+  args = {}
+) => {
+  const decimals = new Big(10).pow(24);
+
+  const transactions: Transaction[] = [];
+
+  transactions.push(
+    getTransaction(
+      accountId!,
+      import.meta.env.VITE_CONTRACT,
+      "transfer_payment",
+      args,
+      Big(amount!).mul(decimals).toFixed(0)
+    )
+  );
+
+  executeMultipleTransactions(transactions, wallet);
+};
+
+export const sendCommonToken = async (
+  wallet: any,
+  connection: WalletSelector,
+  accountId: string,
+  token: string,
+  receiver: string,
+  amount: string,
+  senderId: string,
+  receiverId: string,
+  serverId: string
+) => {
+  const transactions: Transaction[] = [];
+
+  const rawAccountStorage = await getTokenStorage(connection, accountId, token);
+
+  const rawReceiverStorage = await getTokenStorage(connection, receiver, token);
+
+  const rawContractStorage = await getTokenStorage(
+    connection,
+    import.meta.env.VITE_CONTRACT,
+    token
+  );
+
+  if (!rawAccountStorage) {
+    transactions.push(
+      getTransaction(
+        accountId!,
+        token!,
+        "storage_deposit",
+        {
+          account_id: accountId,
+          registration_only: true,
+        },
+        "0.25"
+      )
+    );
+  }
+
+  if (!rawReceiverStorage) {
+    transactions.push(
+      getTransaction(
+        accountId!,
+        token!,
+        "storage_deposit",
+        {
+          account_id: receiver,
+          registration_only: true,
+        },
+        "0.25"
+      )
+    );
+  }
+
+  if (!rawContractStorage) {
+    transactions.push(
+      getTransaction(
+        accountId!,
+        token!,
+        "storage_deposit",
+        {
+          account_id: import.meta.env.VITE_CONTRACT,
+          registration_only: true,
+        },
+        "0.25"
+      )
+    );
+  }
+
+  const metadata = await viewFunction(connection, token!, "ft_metadata");
+
+  const decimals = new Big(10).pow(metadata.decimals);
+
+  transactions.push(
+    getTransaction(accountId!, token!, "ft_transfer_call", {
+      amount: Big(amount!).mul(decimals).toString(),
+      memo: null,
+      msg: JSON.stringify({
+        receiver: receiver,
+        sender_discord: senderId,
+        receiver_discord: receiverId,
+        server_discord: serverId,
+      }),
+      receiver_id: import.meta.env.VITE_CONTRACT,
+    })
+  );
+
+  executeMultipleTransactions(transactions, wallet);
 };
