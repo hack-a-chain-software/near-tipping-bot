@@ -127,9 +127,15 @@ export const TransactionPage = () => {
         {accountId ? (
           <>
             <RobotIcon />
-            <h2 className="text-white font-semibold">
-              You are logged in wallet: {accountId}
-            </h2>
+            <div className="flex flex-col w-full max-w-[273px] justify-center">
+              <h2 className="text-white font-semibold text-center">
+                You are logged in wallet:
+              </h2>
+              <p className="text-white font-semibold break-words text-center">
+                {" "}
+                {accountId}
+              </p>
+            </div>
 
             <div className="flex w-[95%] justify-around mb-7">
               <button
@@ -141,13 +147,13 @@ export const TransactionPage = () => {
                   toggleModal();
                 }}
               >
-                Exchange wallet
+                Toggle Wallet
               </button>
               <button
                 className="bg-azoxo p-3 rounded-md text-white font-semibold text-sm hover:bg-blue_button transition-colors"
                 onClick={async () => await sendMoney()}
               >
-                Proceed
+                Send
               </button>
             </div>
           </>
