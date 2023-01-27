@@ -69,7 +69,7 @@ module.exports = {
 
     if (isEmpty(ranking)) {
       await interaction.reply({
-        context: "No transactions so far",
+        content: "No transactions so far",
         ephemeral: true,
       });
 
